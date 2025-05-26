@@ -2,13 +2,14 @@ import React from "react";
 import { VideoCard } from "../components";
 
 const exampleVideo = {
-  thumbnail: "https://i.ytimg.com/vi/ScMzIvxBSi4/hqdefault.jpg",
-  title: "Example YouTube Video Title That Might Be Long",
+  thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
+  title: "React Crash Course",
   channelName: "CodeWithAI",
   channelAvatar:
-    "https://yt3.ggpht.com/ytc/AMLnZu9d-avatar=s68-c-k-c0x00ffffff-no-rj",
+    "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
   views: "1.2M views",
   uploaded: "2 weeks ago",
+  duration: "12:34", // 🕒 Add this
 };
 
 const HomePage = () => {
@@ -19,7 +20,7 @@ const HomePage = () => {
   }));
 
   return (
-    <div className="bg-black min-h-screen text-white px-6 py-4">
+    <div className=" min-h-screen text-white px-6 py-4">
       <h1 className="text-2xl font-bold mb-6">Home</h1>
 
       {/* Grid with 3 columns on md and up */}

@@ -2,14 +2,19 @@ import React from "react";
 
 const VideoCard = ({ video }) => {
   return (
-    <div className="w-full max-w-sm sm:max-w-xs md:max-w-sm hover:scale-[1.02] transition-transform cursor-pointer">
-      {/* Thumbnail */}
-      <div className="aspect-video rounded-xl overflow-hidden">
+    <div className="w-full max-w-[347.66px] sm:max-w-xs md:max-w-sm hover:scale-[1.02] transition-transform cursor-pointer">
+      {/* Thumbnail container */}
+      <div className="relative aspect-video rounded-xl">
         <img
           src={video.thumbnail}
           alt="Video Thumbnail"
-          className="w-full h-full object-cover"
+          className="h-full object-cover"
         />
+
+        {/* Duration overlay */}
+        <span className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-1.5 py-0.5 rounded">
+          {video.duration}
+        </span>
       </div>
 
       {/* Video info */}
@@ -23,7 +28,7 @@ const VideoCard = ({ video }) => {
 
         {/* Video details */}
         <div className="flex flex-col">
-          <h3 className="text-base font-semibold line-clamp-2 text-white">
+          <h3 className="text-base font-semibold line-clamp-2 text-black">
             {video.title}
           </h3>
           <p className="text-sm text-gray-400">{video.channelName}</p>
