@@ -4,7 +4,7 @@ import SidebarItem from "./SidebarItem";
 
 const Sidebar = () => {
   return (
-    <aside className="w-20 sm:w-24 md:w-32 lg:w-30 flex-shrink-0  pt-4">
+    <aside className="sm:w-24 md:w-30 lg:w-30 flex-shrink-0  pt-4">
       <nav className="flex flex-col items-center gap-10 mt-20">
         <SidebarItem icon={<FiHome />} label="Home" />
         <SidebarItem icon={<FiZap />} label="Shorts" />

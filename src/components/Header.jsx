@@ -21,7 +21,7 @@ const tags = [
 
 const Header = () => {
   return (
-    <header className="flex flex-col w-full bg-white">
+    <header className="flex flex-col mt-2 w-full bg-white">
       {/* Top bar */}
       <div className="flex items-center py-2 px-4">
         {/* Logo */}
