@@ -1,51 +1,46 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 
-export const VideoPlayer = (props) => {
+const VideoPlayer = ({ options, onReady }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
-  const { options, onReady } = props;
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Make sure Video.js player is only initialized once
-    if (!playerRef.current) {
-      // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode.
-      const videoElement = document.createElement("video-js");
-
-      videoElement.classList.add("vjs-big-play-centered");
-      videoRef.current.appendChild(videoElement);
-
-      const player = (playerRef.current = videojs(videoElement, options, () => {
-        videojs.log("player is ready");
-        onReady && onReady(player);
-      }));
-
-      // You could update an existing player in the `else` block here
-      // on prop change, for example:
-    } else {
-      const player = playerRef.current;
-
-      player.autoplay(options.autoplay);
-      player.src(options.sources);
+    if (videoRef.current) {
+      setIsReady(true);
     }
-  }, [options, videoRef]);
+  }, []);
 
-  // Dispose the Video.js player when the functional component unmounts
   useEffect(() => {
-    const player = playerRef.current;
+    if (isReady && videoRef.current && !playerRef.current) {
+      const player = (playerRef.current = videojs(
+        videoRef.current,
+        options,
+        () => {
+          videojs.log("player is ready");
+          onReady && onReady(player);
+        }
+      ));
+    }
 
     return () => {
-      if (player && !player.isDisposed()) {
-        player.dispose();
+      if (playerRef.current && !playerRef.current.isDisposed()) {
+        playerRef.current.dispose();
         playerRef.current = null;
       }
     };
-  }, [playerRef]);
+  }, [isReady, options]);
 
   return (
-    <div data-vjs-player style={{ width: "600px" }}>
-      <div ref={videoRef} />
+    <div data-vjs-player>
+      <video
+        ref={videoRef}
+        className="video-js vjs-big-play-centered "
+        controls
+        preload="auto"
+      />
     </div>
   );
 };

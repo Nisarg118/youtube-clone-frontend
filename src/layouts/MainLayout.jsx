@@ -5,6 +5,7 @@ import { Tags } from "../components";
 function MainLayout() {
   const location = useLocation();
   const showTags = location.pathname === "/";
+  const showSidebar = !location.pathname.startsWith("/watch");
   return (
     <div className="h-screen flex flex-col">
       {/* Full-width Header */}
@@ -12,8 +13,11 @@ function MainLayout() {
 
       {/* Row: Sidebar + Main Content */}
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-
+        {showSidebar ? (
+          <Sidebar />
+        ) : (
+          <div className="sm:w-24 md:w-30 lg:w-30 bg-pink-800" />
+        )}
         <main className="flex-1 p-4 overflow-y-auto">
           {showTags && <Tags />} <Outlet />
         </main>

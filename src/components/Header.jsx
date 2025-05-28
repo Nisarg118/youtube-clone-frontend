@@ -1,9 +1,11 @@
 import { FiMenu, FiSearch, FiMic } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
-    <header className="flex flex-col pt-2 w-full ">
+    <header className="flex flex-col pt-2 w-full bg-green-400">
       {/* Top bar */}
       <div className="flex items-center justify-between py-2 px-4">
         {/* Left: Hamburger + Logo */}
@@ -14,7 +16,8 @@ const Header = () => {
           <img
             src="https://www.logo.wine/a/logo/YouTube/YouTube-Logo.wine.svg"
             alt="YouTube"
-            className="w-[150px] h-auto"
+            className="w-[120px] h-auto cursor-pointer"
+            onClick={() => navigate("/")}
           />
         </div>
 
