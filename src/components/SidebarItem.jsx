@@ -2,8 +2,8 @@ import React from "react";
 
 const SidebarItem = ({ icon, label }) => {
   return (
-    <div className="flex flex-col items-center text-center cursor-pointer">
-      <div className="text-3xl">{icon}</div>
+    <div className="flex flex-col items-center text-center cursor-pointer hover:bg-gray-100 rounded-lg h-[70px] w-[70px] p-2">
+      <div className="text-3xl ">{icon}</div>
       <span className="text-xs mt-1">{label}</span>
     </div>
   );
