@@ -1,5 +1,11 @@
 import { MainLayout } from "./layouts";
-import { Homepage, Aboutpage, Watchpage, Subscriptionpage } from "./pages";
+import {
+  Homepage,
+  Aboutpage,
+  Watchpage,
+  Subscriptionpage,
+  Shortspage,
+} from "./pages";
 import { Route, Routes } from "react-router-dom";
 function App() {
   const vid = {
@@ -40,10 +46,8 @@ function App() {
           path="watch/:id"
           element={<Watchpage vid={vid} suggestedVideos={suggestedVideos} />}
         />
-        <Route
-          path="subscription"
-          element={<Subscriptionpage/>}
-        />
+        <Route path="subscriptions" element={<Subscriptionpage />} />
+        <Route path="shorts" element={<Shortspage />} />
       </Route>
     </Routes>
   );

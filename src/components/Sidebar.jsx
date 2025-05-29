@@ -1,14 +1,30 @@
-import { FiHome, FiUser, FiVideo, FiZap, FiMenu } from "react-icons/fi";
+import { FiHome, FiUser, FiVideo, FiZap } from "react-icons/fi";
 import SidebarItem from "./SidebarItem";
+import { useNavigate, useLocation } from "react-router-dom";
+
+const navItems = [
+  { label: "Home", icon: <FiHome />, path: "/" },
+  { label: "Shorts", icon: <FiZap />, path: "/shorts" },
+  { label: "Subscriptions", icon: <FiVideo />, path: "/subscriptions" },
+  { label: "You", icon: <FiUser />, path: "/about" },
+];
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
-    <aside className="sm:w-24 md:w-30 lg:w-30 flex-shrink-0 pt-4">
-      <nav className="flex flex-col items-center gap-5 mt-10">
-        <SidebarItem icon={<FiHome />} label="Home" />
-        <SidebarItem icon={<FiZap />} label="Shorts" />
-        <SidebarItem icon={<FiVideo />} label="Subscriptions" />
-        <SidebarItem icon={<FiUser />} label="You" />
+    <aside className="h-screen sticky top-0 sm:w-20 md:w-24 lg:w-28 px-2 py-4 border-r">
+      <nav className="flex flex-col items-center gap-6 mt-8">
+        {navItems.map(({ label, icon, path }) => (
+          <SidebarItem
+            key={label}
+            label={label}
+            icon={icon}
+            isActive={location.pathname === path}
+            onClick={() => navigate(path)}
+          />
+        ))}
       </nav>
     </aside>
   );
