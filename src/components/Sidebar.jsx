@@ -14,7 +14,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   return (
-    <aside className="h-screen sticky top-0 sm:w-20 md:w-24 lg:w-28 px-2 py-4 border-r">
+    <aside className="h-screen sticky top-0 sm:w-20 md:w-24 lg:w-28 px-2 py-4">
       <nav className="flex flex-col items-center gap-6 mt-8">
         {navItems.map(({ label, icon, path }) => (
           <SidebarItem
