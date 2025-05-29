@@ -1,4 +1,4 @@
-import { VideoCard } from "../components";
+import { LikedVideos, Playlists, WatchHistory } from "../components";
 
 const Aboutpage = () => {
   const user = {
@@ -54,140 +54,9 @@ const Aboutpage = () => {
         </div>
       </div>
 
-      {/* Watch History */}
-      <section className="space-y-2">
-        {/* Top Controls */}
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">Watch History</h3>
-          <div className="flex items-center gap-2">
-            <button className="text-sm font-medium text-blue-600 hover:underline">
-              View All
-            </button>
-            <button
-              onClick={() => {
-                document.getElementById("history-scroll").scrollLeft -= 300;
-              }}
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              ←
-            </button>
-            <button
-              onClick={() => {
-                document.getElementById("history-scroll").scrollLeft += 300;
-              }}
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              →
-            </button>
-          </div>
-        </div>
-
-        {/* Horizontal Scrollable Row */}
-        <div
-          id="history-scroll"
-          className="flex gap-4 overflow-x-auto scrollbar-hide py-2"
-        >
-          {mockVideos.map((vid) => (
-            <div key={vid.id} className="flex-shrink-0 w-64">
-              <VideoCard video={vid} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Playlists */}
-      <section className="space-y-2">
-        {/* Controls */}
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">Playlists</h3>
-          <div className="flex items-center gap-2">
-            <button className="text-sm font-medium text-blue-600 hover:underline">
-              View All
-            </button>
-            <button
-              onClick={() =>
-                document.getElementById("playlists-scroll")?.scrollBy({
-                  left: -300,
-                  behavior: "smooth",
-                })
-              }
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              ←
-            </button>
-            <button
-              onClick={() =>
-                document.getElementById("playlists-scroll")?.scrollBy({
-                  left: 300,
-                  behavior: "smooth",
-                })
-              }
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              →
-            </button>
-          </div>
-        </div>
-
-        {/* Scrollable container */}
-        <div
-          id="playlists-scroll"
-          className="flex overflow-x-auto scroll-smooth no-scrollbar gap-4 py-2 px-1"
-        >
-          {mockVideos.map((vid) => (
-            <div key={vid.id} className="flex-shrink-0 w-64">
-              <VideoCard video={vid} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Liked Videos */}
-      <section className="space-y-2">
-        {/* Controls */}
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">Liked Videos</h3>
-          <div className="flex items-center gap-2">
-            <button className="text-sm font-medium text-blue-600 hover:underline">
-              View All
-            </button>
-            <button
-              onClick={() =>
-                document.getElementById("playlists-scroll")?.scrollBy({
-                  left: -300,
-                  behavior: "smooth",
-                })
-              }
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              ←
-            </button>
-            <button
-              onClick={() =>
-                document.getElementById("playlists-scroll")?.scrollBy({
-                  left: 300,
-                  behavior: "smooth",
-                })
-              }
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              →
-            </button>
-          </div>
-        </div>
-
-        {/* Scrollable container */}
-        <div
-          id="playlists-scroll"
-          className="flex overflow-x-auto scroll-smooth no-scrollbar gap-4 py-2 px-1"
-        >
-          {mockVideos.map((vid) => (
-            <div key={vid.id} className="flex-shrink-0 w-64">
-              <VideoCard video={vid} />
-            </div>
-          ))}
-        </div>
-      </section>
+      <WatchHistory mockVideos={mockVideos} />
+      <Playlists mockVideos={mockVideos} />
+      <LikedVideos mockVideos={mockVideos} />
     </div>
   );
 };

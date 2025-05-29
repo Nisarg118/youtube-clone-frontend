@@ -5,6 +5,10 @@ import SidebarItem from "./SidebarItem";
 import Header from "./Header";
 import Tags from "./Tags";
 import { VideoCard, VideoCardCompact } from "./VideoCard";
+import WatchHistory from "./WatchHistory";
+import LikedVideos from "./LikedVideos";
+import Playlists from "./Playlists";
+import Comment from "./Comment";
 export {
   Tags,
   Searchbar,
@@ -14,4 +18,8 @@ export {
   Sidebar,
   SidebarItem,
   Header,
+  WatchHistory,
+  LikedVideos,
+  Playlists,
+  Comment,
 };
