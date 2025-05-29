@@ -24,13 +24,16 @@ const HomePage = () => {
       <h1 className="text-2xl font-bold mb-6">Home</h1>
 
       {/* Grid with 3 columns on md and up */}
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-        {videos.map((video, index) => (
-          <VideoCard key={index} video={video} />
-        ))}
+      <div className="w-full max-w-screen-xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+          {videos.map((video) => (
+            <VideoCard key={video.id} video={video} />
+          ))}
+        </div>
       </div>
     </div>
   );
+  q;
 };
 
 export default HomePage;
