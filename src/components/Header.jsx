@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <header className="flex flex-col pt-2 w-full bg-green-400">
+    <header className="flex flex-col pt-2 w-full ">
       {/* Top bar */}
       <div className="flex items-center justify-between py-2 px-4">
         {/* Left: Hamburger + Logo */}

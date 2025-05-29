@@ -1,4 +1,5 @@
 import Homepage from "./Homepage";
 import Aboutpage from "./Aboutpage";
 import Watchpage from "./Watchpage";
-export { Homepage, Aboutpage, Watchpage };
+import Subscriptionpage from "./Subscriptionpage";
+export { Homepage, Aboutpage, Watchpage, Subscriptionpage };

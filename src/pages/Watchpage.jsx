@@ -28,7 +28,7 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row w-full max-w-[1440px] gap-6">
+    <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}
       <div className="flex-1">
         {/* Video Player */}
@@ -119,7 +119,7 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
       </div>
 
       {/* RIGHT SECTION: Suggested Videos */}
-      <div className="w-full lg:w-[400px] bg-pink-500 flex flex-col gap-4">
+      <div className="w-full lg:w-[400px] flex flex-col gap-4">
         {suggestedVideos.slice(0, 15).map((vid, idx) => (
           <VideoCardCompact key={idx} video={vid} />
         ))}

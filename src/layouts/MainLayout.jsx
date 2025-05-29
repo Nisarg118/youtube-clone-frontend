@@ -16,7 +16,7 @@ function MainLayout() {
         {showSidebar ? (
           <Sidebar />
         ) : (
-          <div className="sm:w-24 md:w-30 lg:w-30 bg-pink-800" />
+          <div className="sm:w-24 md:w-30 lg:w-30" />
         )}
         <main className="flex-1 p-4 overflow-y-auto">
           {showTags && <Tags />} <Outlet />

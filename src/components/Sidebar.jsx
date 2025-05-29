@@ -1,6 +1,5 @@
 import { FiHome, FiUser, FiVideo, FiZap, FiMenu } from "react-icons/fi";
 import SidebarItem from "./SidebarItem";
-import { useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   return (

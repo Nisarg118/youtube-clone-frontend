@@ -1,5 +1,5 @@
 import { MainLayout } from "./layouts";
-import { Homepage, Aboutpage, Watchpage } from "./pages";
+import { Homepage, Aboutpage, Watchpage, Subscriptionpage } from "./pages";
 import { Route, Routes } from "react-router-dom";
 function App() {
   const vid = {
@@ -37,8 +37,12 @@ function App() {
         <Route index element={<Homepage />} />
         <Route path="about" element={<Aboutpage />} />
         <Route
-          path="/watch/:id"
+          path="watch/:id"
           element={<Watchpage vid={vid} suggestedVideos={suggestedVideos} />}
+        />
+        <Route
+          path="subscription"
+          element={<Subscriptionpage/>}
         />
       </Route>
     </Routes>
