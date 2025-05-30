@@ -6,6 +6,7 @@ import {
   Subscriptionpage,
   Shortspage,
   Historypage,
+  Likedpage,
 } from "./pages";
 import { Route, Routes } from "react-router-dom";
 function App() {
@@ -44,6 +45,8 @@ function App() {
         <Route index element={<Homepage />} />
         <Route path="about" element={<Aboutpage />} />
         <Route path="history" element={<Historypage />} />
+        <Route path="likedVideos" element={<Likedpage />} />
+
         <Route
           path="watch/:id"
           element={<Watchpage vid={vid} suggestedVideos={suggestedVideos} />}

@@ -1,6 +1,8 @@
 import React from "react";
 import { VideoCard } from "../components";
+import { useNavigate } from "react-router-dom";
 const LikedVideos = ({ mockVideos }) => {
+  const navigate = useNavigate();
   return (
     <div>
       {/* Liked Videos */}
@@ -9,7 +11,10 @@ const LikedVideos = ({ mockVideos }) => {
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Liked Videos</h3>
           <div className="flex items-center gap-2">
-            <button className="text-sm font-medium text-blue-600 hover:underline">
+            <button
+              onClick={() => navigate("/likedVideos")}
+              className="text-sm font-medium text-blue-600 hover:underline"
+            >
               View All
             </button>
             <button

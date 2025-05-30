@@ -5,6 +5,7 @@ import Subscriptionpage from "./Subscriptionpage";
 import Shortspage from "./Shortspage";
 import Historypage from "./Historypage";
 import Playlists from "../components/Playlists";
+import Likedpage from "./LikedPage";
 export {
   Homepage,
   Aboutpage,
@@ -13,4 +14,5 @@ export {
   Shortspage,
   Historypage,
   Playlists,
+  Likedpage,
 };
