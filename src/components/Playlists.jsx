@@ -1,7 +1,9 @@
 import React from "react";
 import { VideoCard } from "../components";
+import { useNavigate } from "react-router-dom";
 
 const Playlists = ({ mockVideos }) => {
+  const navigate = useNavigate();
   return (
     <div>
       {/* Playlists */}
@@ -10,7 +12,10 @@ const Playlists = ({ mockVideos }) => {
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Playlists</h3>
           <div className="flex items-center gap-2">
-            <button className="text-sm font-medium text-blue-600 hover:underline">
+            <button
+              onClick={() => navigate("/playlists")}
+              className="text-sm font-medium text-blue-600 hover:underline"
+            >
               View All
             </button>
             <button

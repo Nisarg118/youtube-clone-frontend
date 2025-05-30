@@ -7,6 +7,7 @@ import {
   Shortspage,
   Historypage,
   Likedpage,
+  Playlistspage,
 } from "./pages";
 import { Route, Routes } from "react-router-dom";
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path="about" element={<Aboutpage />} />
         <Route path="history" element={<Historypage />} />
         <Route path="likedVideos" element={<Likedpage />} />
+        <Route path="playlists" element={<Playlistspage />} />
 
         <Route
           path="watch/:id"
