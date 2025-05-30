@@ -1,7 +1,14 @@
 import React from "react";
 import { VideoCard } from "../components";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const WatchHistory = ({ mockVideos }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/history`);
+  };
   return (
     <div>
       {/* Watch History */}
@@ -10,7 +17,10 @@ const WatchHistory = ({ mockVideos }) => {
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Watch History</h3>
           <div className="flex items-center gap-2">
-            <button className="text-sm font-medium text-blue-600 hover:underline">
+            <button
+              className="text-sm font-medium text-blue-600 hover:underline"
+              onClick={handleClick}
+            >
               View All
             </button>
             <button

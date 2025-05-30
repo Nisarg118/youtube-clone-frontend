@@ -16,6 +16,8 @@ const Aboutpage = () => {
     thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
     title: `Sample Video #${i + 1}`,
     channelName: user.channelName,
+    channelAvatar:
+      "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
     views: "1.5M views",
     uploaded: "1 week ago",
     duration: "12:34",

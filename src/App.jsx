@@ -42,9 +42,8 @@ function App() {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Homepage />} />
-        <Route path="about" element={<Aboutpage />}>
-          <Route path="history" element={<Historypage />} />
-        </Route>
+        <Route path="about" element={<Aboutpage />} />
+        <Route path="history" element={<Historypage />} />
         <Route
           path="watch/:id"
           element={<Watchpage vid={vid} suggestedVideos={suggestedVideos} />}
