@@ -38,7 +38,10 @@ const Header = () => {
 
         {/* Right: Sign-in */}
         <div>
-          <button className="flex items-center gap-2 px-4 py-3 border rounded-full hover:bg-blue-100 mr-5">
+          <button
+            onClick={() => navigate("/login")}
+            className="flex items-center gap-2 px-4 py-3 border rounded-full hover:bg-blue-100 mr-5"
+          >
             <FaUserCircle className="text-2xl text-blue-500" />
             <span className="text-sm font-medium text-blue-600">Sign in</span>
           </button>

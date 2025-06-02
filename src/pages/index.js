@@ -6,6 +6,8 @@ import Shortspage from "./Shortspage";
 import Historypage from "./Historypage";
 import Likedpage from "./LikedPage";
 import Playlistspage from "./Playlistspage";
+import Loginpage from "./Loginpage";
+import Signuppage from "./Signuppage";
 export {
   Homepage,
   Aboutpage,
@@ -15,4 +17,6 @@ export {
   Likedpage,
   Playlistspage,
   Watchpage,
+  Loginpage,
+  Signuppage,
 };
