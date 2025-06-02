@@ -9,6 +9,7 @@ import WatchHistory from "./WatchHistory";
 import LikedVideos from "./LikedVideos";
 import Playlists from "./Playlists";
 import Comment from "./Comment";
+import Signin from "./Signin";
 export {
   Tags,
   Searchbar,
@@ -22,4 +23,5 @@ export {
   LikedVideos,
   Playlists,
   Comment,
+  Signin,
 };

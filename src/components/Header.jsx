@@ -1,9 +1,13 @@
 import { FiMenu, FiSearch, FiMic } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Signin from "./Signin";
+import Navbuttons from "./Navbuttons";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [signin, setSignin] = useState(true);
   return (
     <header className="flex flex-col pt-2 w-full ">
       {/* Top bar */}
@@ -37,15 +41,7 @@ const Header = () => {
         </div>
 
         {/* Right: Sign-in */}
-        <div>
-          <button
-            onClick={() => navigate("/login")}
-            className="flex items-center gap-2 px-4 py-3 border rounded-full hover:bg-blue-100 mr-5"
-          >
-            <FaUserCircle className="text-2xl text-blue-500" />
-            <span className="text-sm font-medium text-blue-600">Sign in</span>
-          </button>
-        </div>
+        {signin ? <Navbuttons /> : <Signin />}
       </div>
     </header>
   );
