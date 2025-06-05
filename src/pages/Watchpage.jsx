@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import videojs from "video.js";
 import { VideoPlayer } from "../features";
 import { Comment, VideoCardCompact } from "../components/";
+import { useNavigate } from "react-router-dom";
 
 const Watchpage = ({ vid: video, suggestedVideos }) => {
   const playerRef = useRef(null);
@@ -26,7 +27,7 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
     player.on("waiting", () => videojs.log("player is waiting"));
     player.on("dispose", () => videojs.log("player will dispose"));
   };
-
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}
@@ -46,7 +47,10 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
         {/* Channel + Subscribe */}
         <div className="flex items-center mt-4">
           {/* Channel Info */}
-          <div className="flex items-center gap-3">
+          <div
+            onClick={() => navigate("/channel")}
+            className="flex items-center gap-3 cursor-pointer"
+          >
             <img
               src={video.channelAvatar}
               alt="Channel Avatar"

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { VideoCard } from "../components";
 
 // Dummy data
 const channels = [...Array(12)].map((_, i) => ({
@@ -11,16 +13,26 @@ const channels = [...Array(12)].map((_, i) => ({
   description: "This is a sample description for the channel.",
 }));
 
-const videos = [...Array(20)].map((_, i) => ({
-  id: i,
-  title: `Video Title ${i + 1}`,
-  channel: `Channel ${(i % 6) + 1}`,
+const exampleVideo = {
   thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
-}));
+  title: "React Crash Course",
+  channelName: "CodeWithAI",
+  channelAvatar:
+    "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
+  views: "1.2M views",
+  uploaded: "2 weeks ago",
+  duration: "12:34", // 🕒 Add this
+};
 
 const Subscriptionpage = () => {
   const [showAllChannels, setShowAllChannels] = useState(false);
   const visibleChannels = showAllChannels ? channels : channels.slice(0, 5);
+
+  const navigate = useNavigate();
+  const videos = Array.from({ length: 21 }, (_, i) => ({
+    ...exampleVideo,
+    title: `${exampleVideo.title} #${i + 1}`,
+  }));
 
   return (
     <div className="w-full max-w-[1440px] px-4 py-6 mx-auto">
@@ -35,11 +47,20 @@ const Subscriptionpage = () => {
             <img
               src={ch.avatar}
               alt={ch.name}
-              className="w-14 h-14 rounded-full"
+              className="w-14 h-14 rounded-full cursor-pointer"
+              onClick={() => navigate("/channel")}
             />
             <div className="flex-1">
-              <p className="font-semibold">{ch.name}</p>
-              <p className="text-sm text-gray-500">
+              <p
+                onClick={() => navigate("/channel")}
+                className="cursor-pointer font-semibold"
+              >
+                {ch.name}
+              </p>
+              <p
+                onClick={() => navigate("/channel")}
+                className="text-sm text-gray-500 cursor-pointer"
+              >
                 {ch.handle} • {ch.subscribers}
               </p>
               <p className="text-sm mt-1 line-clamp-2">{ch.description}</p>
@@ -51,7 +72,7 @@ const Subscriptionpage = () => {
         ))}
       </div>
 
-      {!showAllChannels && channels.length > 5 && (
+      {!showAllChannels && channels.length > 6 && (
         <div className="mt-4">
           <button
             className="text-blue-600 font-medium hover:underline"
@@ -67,21 +88,8 @@ const Subscriptionpage = () => {
         Latest from your subscriptions
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {videos.map((vid) => (
-          <div
-            key={vid.id}
-            className="bg-white border rounded-lg overflow-hidden shadow-sm"
-          >
-            <img
-              src={vid.thumbnail}
-              alt={vid.title}
-              className="w-full h-auto"
-            />
-            <div className="p-4">
-              <p className="font-medium">{vid.title}</p>
-              <p className="text-sm text-gray-500 mt-1">{vid.channel}</p>
-            </div>
-          </div>
+        {videos.map((video) => (
+          <VideoCard key={video.id} video={video} />
         ))}
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { LikedVideos, Playlists, WatchHistory } from "../components";
 
 const Aboutpage = () => {
@@ -22,12 +23,15 @@ const Aboutpage = () => {
     uploaded: "1 week ago",
     duration: "12:34",
   }));
-
+  const navigate = useNavigate();
   return (
     <div className=" p-6 space-y-10">
       {/* Channel Info */}
       <div className="max-w-4xl shadow-lg rounded-lg p-2 space-y-5">
-        <div className="flex items-center gap-4">
+        <div
+          onClick={() => navigate("/channel")}
+          className="flex items-center gap-4 cursor-pointer"
+        >
           <img
             src={user.avatar}
             alt="User Avatar"

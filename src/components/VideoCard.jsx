@@ -1,10 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const VideoCard = ({ video }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full max-w-[360px] cursor-pointer">
       {/* Thumbnail */}
-      <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+      <div
+        onClick={() => navigate("/watch/4")}
+        className="relative w-full aspect-video rounded-lg overflow-hidden"
+      >
         <img
           src={video.thumbnail}
           alt="Video Thumbnail"
@@ -29,7 +35,12 @@ const VideoCard = ({ video }) => {
           <h3 className="font-medium text-black leading-snug line-clamp-2">
             {video.title}
           </h3>
-          <p className="text-gray-600 mt-0.5">{video.channelName}</p>
+          <p
+            onClick={() => navigate("/channel")}
+            className="text-gray-600 mt-0.5"
+          >
+            {video.channelName}
+          </p>
           <p className="text-gray-600">
             {video.views} • {video.uploaded}
           </p>
@@ -40,10 +51,14 @@ const VideoCard = ({ video }) => {
 };
 
 const VideoCardCompact = ({ video }) => {
+  const navigate = useNavigate();
   return (
     <div className="flex gap-3 w-full cursor-pointer">
       {/* Thumbnail */}
-      <div className="relative min-w-[168px] aspect-video rounded overflow-hidden">
+      <div
+        onClick={() => navigate("/watch/4")}
+        className="relative min-w-[168px] aspect-video rounded overflow-hidden"
+      >
         <img
           src={video.thumbnail}
           alt="Thumbnail"
@@ -56,10 +71,18 @@ const VideoCardCompact = ({ video }) => {
 
       {/* Info */}
       <div className="flex flex-col flex-1">
-        <h3 className="text-sm font-medium text-wrap leading-tight text-black line-clamp-2">
+        <h3
+          onClick={() => navigate("/watch/4")}
+          className="text-sm font-medium text-wrap leading-tight text-black line-clamp-2"
+        >
           {video.title}
         </h3>
-        <p className="text-xs text-[#606060] mt-1">{video.channelName}</p>
+        <p
+          onClick={() => navigate("/channel")}
+          className="text-xs text-[#606060] mt-1"
+        >
+          {video.channelName}
+        </p>
         <p className="text-xs text-[#606060]">
           {video.views} • {video.uploaded}
         </p>

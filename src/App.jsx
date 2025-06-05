@@ -10,6 +10,7 @@ import {
   Playlistspage,
   Loginpage,
   Signuppage,
+  Uploadpage,
 } from "./pages";
 import { Route, Routes } from "react-router-dom";
 function App() {
@@ -52,7 +53,7 @@ function App() {
         <Route path="playlists" element={<Playlistspage />} />
         <Route path="login" element={<Loginpage />} />
         <Route path="signup" element={<Signuppage />} />
-
+        <Route path="upload" element={<Uploadpage />} />
         <Route
           path="watch/:id"
           element={<Watchpage vid={vid} suggestedVideos={suggestedVideos} />}
