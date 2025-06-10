@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useReducer } from "react";
+import React, { useRef, useEffect } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 
@@ -6,18 +6,25 @@ const VideoPlayer = ({ options, onReady }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
 
-  const useRef = useReducer();
   useEffect(() => {
-    if (!playerRef.current && videoRef.current) {
-      const player = videojs(videoRef.current, options, () => {
-        player.aspectRatio("16:9");
-        if (onReady) onReady(player);
-      });
-      playerRef.current = player;
-    }
+    let rafId;
+
+    // Delay initialization until the next animation frame
+    rafId = requestAnimationFrame(() => {
+      if (!playerRef.current && videoRef.current) {
+        const player = videojs(videoRef.current, options, () => {
+          player.aspectRatio("16:9");
+          if (onReady) onReady(player);
+        });
+        playerRef.current = player;
+      } else if (playerRef.current && options.sources?.[0]?.src) {
+        playerRef.current.src(options.sources);
+      }
+    });
 
     return () => {
-      if (playerRef.current && !playerRef.current.isDisposed()) {
+      cancelAnimationFrame(rafId);
+      if (playerRef.current) {
         playerRef.current.dispose();
         playerRef.current = null;
       }

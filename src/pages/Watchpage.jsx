@@ -54,6 +54,8 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
     player.on("waiting", () => videojs.log("player is waiting"));
     player.on("dispose", () => videojs.log("player will dispose"));
   };
+  console.log("Video Link", vidLink); // Should log a full valid MP4 URL
+
   const navigate = useNavigate();
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
@@ -62,7 +64,7 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
         {/* Video Player */}
         <div className="relative w-full pb-[56.25%] bg-black rounded-lg overflow-hidden">
           <div className="absolute inset-0">
-            {vidLink ? (
+            {vidLink && vidLink.endsWith(".mp4") ? (
               <VideoPlayer
                 options={{
                   controls: true,
