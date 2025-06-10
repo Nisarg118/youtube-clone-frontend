@@ -9,6 +9,7 @@ import Playlistspage from "./Playlistspage";
 import Loginpage from "./Loginpage";
 import Signuppage from "./Signuppage";
 import Uploadpage from "./Uploadpage";
+import Channelpage from "./Channelpage";
 export {
   Homepage,
   Aboutpage,
@@ -21,4 +22,5 @@ export {
   Loginpage,
   Signuppage,
   Uploadpage,
+  Channelpage,
 };

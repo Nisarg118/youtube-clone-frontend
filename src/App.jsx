@@ -11,6 +11,7 @@ import {
   Loginpage,
   Signuppage,
   Uploadpage,
+  Channelpage,
 } from "./pages";
 import { Route, Routes } from "react-router-dom";
 function App() {
@@ -54,6 +55,7 @@ function App() {
         <Route path="login" element={<Loginpage />} />
         <Route path="signup" element={<Signuppage />} />
         <Route path="upload" element={<Uploadpage />} />
+        <Route path="channel" element={<Channelpage />}></Route>
         <Route
           path="watch/:id"
           element={<Watchpage vid={vid} suggestedVideos={suggestedVideos} />}

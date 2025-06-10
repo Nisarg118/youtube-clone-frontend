@@ -1,28 +1,19 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useReducer } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 
 const VideoPlayer = ({ options, onReady }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
-  const [isReady, setIsReady] = useState(false);
 
+  const useRef = useReducer();
   useEffect(() => {
-    if (videoRef.current) {
-      setIsReady(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isReady && videoRef.current && !playerRef.current) {
-      const player = (playerRef.current = videojs(
-        videoRef.current,
-        options,
-        () => {
-          videojs.log("player is ready");
-          onReady && onReady(player);
-        }
-      ));
+    if (!playerRef.current && videoRef.current) {
+      const player = videojs(videoRef.current, options, () => {
+        player.aspectRatio("16:9");
+        if (onReady) onReady(player);
+      });
+      playerRef.current = player;
     }
 
     return () => {
@@ -31,13 +22,13 @@ const VideoPlayer = ({ options, onReady }) => {
         playerRef.current = null;
       }
     };
-  }, [isReady, options]);
+  }, [options, onReady]);
 
   return (
-    <div data-vjs-player>
+    <div data-vjs-player className="w-full h-full">
       <video
         ref={videoRef}
-        className="video-js vjs-big-play-centered "
+        className="video-js vjs-default-skin w-full h-full"
         controls
         preload="auto"
       />

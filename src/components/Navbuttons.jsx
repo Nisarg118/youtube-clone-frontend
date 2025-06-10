@@ -3,7 +3,7 @@ import { FiPlus } from "react-icons/fi";
 import { FiBell } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-const Navbuttons = () => {
+const Navbuttons = ({}) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center gap-4 mr-10">

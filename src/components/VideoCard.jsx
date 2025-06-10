@@ -1,14 +1,17 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const VideoCard = ({ video }) => {
   const navigate = useNavigate();
 
+  function handlePlay() {
+    navigate(`/watch/${video.id}`);
+  }
+
   return (
     <div className="w-full max-w-[360px] cursor-pointer">
       {/* Thumbnail */}
       <div
-        onClick={() => navigate("/watch/4")}
+        onClick={handlePlay}
         className="relative w-full aspect-video rounded-lg overflow-hidden"
       >
         <img
@@ -25,7 +28,7 @@ const VideoCard = ({ video }) => {
       <div className="flex pt-3 gap-3">
         {/* Channel Avatar */}
         <img
-          src={video.channelAvatar}
+          src={video.owner[0].avatar}
           alt="Channel Avatar"
           className="w-9 h-9 rounded-full object-cover"
         />
@@ -39,10 +42,10 @@ const VideoCard = ({ video }) => {
             onClick={() => navigate("/channel")}
             className="text-gray-600 mt-0.5"
           >
-            {video.channelName}
+            {video.owner[0].username}
           </p>
           <p className="text-gray-600">
-            {video.views} • {video.uploaded}
+            {video.views} Views • {video.createdAt}
           </p>
         </div>
       </div>

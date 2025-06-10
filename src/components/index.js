@@ -10,6 +10,8 @@ import LikedVideos from "./LikedVideos";
 import Playlists from "./Playlists";
 import Comment from "./Comment";
 import Signin from "./Signin";
+import ChannelInfo from "./ChannelInfo";
+import Navbuttons from "./Navbuttons";
 export {
   Tags,
   Searchbar,
@@ -24,4 +26,6 @@ export {
   Playlists,
   Comment,
   Signin,
+  ChannelInfo,
+  Navbuttons,
 };

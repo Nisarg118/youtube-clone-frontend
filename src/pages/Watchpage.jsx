@@ -1,22 +1,49 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import { VideoPlayer } from "../features";
 import { Comment, VideoCardCompact } from "../components/";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Watchpage = ({ vid: video, suggestedVideos }) => {
   const playerRef = useRef(null);
   const [showMore, setShowMore] = useState(false);
+  const path = useLocation();
+  const [vidLink, setVidLink] = useState("");
 
-  const videoLink = "https://www.w3schools.com/html/mov_bbb.mp4";
+  const arr = path.pathname.split("/");
+
+  async function fetchVideo() {
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/videos/${arr[2]}`, {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODQ0NzExYWM5NTY0MmFmOGMwY2RjODEiLCJlbWFpbCI6Im5pc2FyZzRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJuaXNhcmc0IiwiZnVsbE5hbWUiOiJOaXNhcmcgQmhhbWF0IiwiaWF0IjoxNzQ5NDk2MzI5LCJleHAiOjE3NDk1ODI3Mjl9.UCA2YmXzTcnM8iuO0xPe_JWT0df5UnzAxlyupG7EEC0",
+        },
+      });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+
+      // update state with actual videos
+      setVidLink(data.data.videoFile);
+    } catch (error) {
+      console.error("Failed to fetch videos:", error.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchVideo();
+  }, []);
+
+  console.log("Video Source URL:", vidLink);
 
   const videoPlayerOptions = {
     controls: true,
     responsive: true,
     fluid: true,
+    autoplay: false,
     sources: [
       {
-        src: videoLink,
+        src: vidLink,
         type: "video/mp4",
       },
     ],
@@ -33,12 +60,22 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
       {/* LEFT SECTION */}
       <div className="flex-1">
         {/* Video Player */}
-        <div className="aspect-video w-full bg-black rounded-lg overflow-hidden">
-          <VideoPlayer
-            className="w-full h-full"
-            options={videoPlayerOptions}
-            onReady={handlePlayerReady}
-          />
+        <div className="relative w-full pb-[56.25%] bg-black rounded-lg overflow-hidden">
+          <div className="absolute inset-0">
+            {vidLink ? (
+              <VideoPlayer
+                options={{
+                  controls: true,
+                  fluid: true,
+                  autoplay: false,
+                  sources: [{ src: vidLink, type: "video/mp4" }],
+                }}
+                onReady={handlePlayerReady}
+              />
+            ) : (
+              <div className="text-white text-center p-4">Loading video...</div>
+            )}
+          </div>
         </div>
 
         {/* Title */}
