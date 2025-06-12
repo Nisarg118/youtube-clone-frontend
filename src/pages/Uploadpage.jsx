@@ -1,11 +1,39 @@
-import React from "react";
+import { useState } from "react";
 
 const Uploadpage = () => {
+  const [video, setVideo] = useState({
+    title: "",
+    description: "",
+    thumbnail: "",
+    videoFile: "",
+  });
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("title", video.title);
+    formData.append("description", video.description);
+    formData.append("thumbnail", video.thumbnail); // must be a File or Blob
+    formData.append("videoFile", video.videoFile);
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/videos`, {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODQ0NzExYWM5NTY0MmFmOGMwY2RjODEiLCJlbWFpbCI6Im5pc2FyZzRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJuaXNhcmc0IiwiZnVsbE5hbWUiOiJOaXNhcmcgQmhhbWF0IiwiaWF0IjoxNzQ5NzQxOTgwLCJleHAiOjE3NDk4MjgzODB9.mD7QWjNGcNHJmChMSSbOv5AaOlUBAA2xSMda1QgVI0g",
+        },
+        body: formData,
+      });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    } catch (error) {
+      console.error("Failed to fetch videos:", error.message);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-xl bg-white p-8 rounded-2xl shadow">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Upload Video</h2>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Title */}
           <div>
             <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -14,6 +42,7 @@ const Uploadpage = () => {
             <input
               type="text"
               placeholder="Enter video title"
+              onChange={(e) => setVideo({ ...video, title: e.target.value })}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-400 outline-none"
             />
           </div>
@@ -26,6 +55,9 @@ const Uploadpage = () => {
             <textarea
               rows="4"
               placeholder="Enter video description"
+              onChange={(e) =>
+                setVideo({ ...video, description: e.target.value })
+              }
               className="w-full px-4 py-2 border rounded-lg resize-none focus:ring-2 focus:ring-red-400 outline-none"
             ></textarea>
           </div>
@@ -38,6 +70,9 @@ const Uploadpage = () => {
             <input
               type="file"
               accept="image/*"
+              onChange={(e) =>
+                setVideo({ ...video, thumbnail: e.target.files[0] })
+              }
               className="w-full px-3 py-2 border rounded-lg cursor-pointer"
             />
           </div>
@@ -50,6 +85,9 @@ const Uploadpage = () => {
             <input
               type="file"
               accept="video/*"
+              onChange={(e) =>
+                setVideo({ ...video, videoFile: e.target.files[0] })
+              }
               className="w-full px-3 py-2 border rounded-lg cursor-pointer"
             />
           </div>

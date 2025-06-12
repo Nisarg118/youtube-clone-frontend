@@ -15,19 +15,6 @@ import {
 } from "./pages";
 import { Route, Routes } from "react-router-dom";
 function App() {
-  const vid = {
-    id: "abc123",
-    title: "How to Build a YouTube Clone",
-    channelAvatar:
-      "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
-    channelName: "CodeWithDev",
-    subscribers: "1.2M",
-    views: "3.4M views",
-    uploaded: "2 weeks ago",
-    description:
-      "In this video, we will build a YouTube clone using React... In this video, we will build a YouTube clone using React... In this video, we will build a YouTube clone using React...In this video, we will build a YouTube clone using React...In this video, we will build a YouTube clone using React...",
-  };
-
   const exampleVideo = {
     thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
     title: "React Crash Course React Crash course",
@@ -58,7 +45,7 @@ function App() {
         <Route path="channel" element={<Channelpage />}></Route>
         <Route
           path="watch/:id"
-          element={<Watchpage vid={vid} suggestedVideos={suggestedVideos} />}
+          element={<Watchpage suggestedVideos={suggestedVideos} />}
         />
         <Route path="subscriptions" element={<Subscriptionpage />} />
         <Route path="shorts" element={<Shortspage />} />

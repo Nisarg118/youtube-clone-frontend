@@ -7,23 +7,28 @@ const VideoPlayer = ({ options, onReady }) => {
   const playerRef = useRef(null);
 
   useEffect(() => {
-    let rafId;
-
-    // Delay initialization until the next animation frame
-    rafId = requestAnimationFrame(() => {
-      if (!playerRef.current && videoRef.current) {
+    const timer = setTimeout(() => {
+      if (
+        videoRef.current &&
+        videoRef.current.isConnected &&
+        options?.sources?.length > 0 &&
+        !playerRef.current
+      ) {
         const player = videojs(videoRef.current, options, () => {
           player.aspectRatio("16:9");
           if (onReady) onReady(player);
         });
         playerRef.current = player;
-      } else if (playerRef.current && options.sources?.[0]?.src) {
+      } else if (
+        playerRef.current &&
+        options?.sources?.[0]?.src !== playerRef.current.src()
+      ) {
         playerRef.current.src(options.sources);
       }
-    });
+    }, 0);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      clearTimeout(timer);
       if (playerRef.current) {
         playerRef.current.dispose();
         playerRef.current = null;
@@ -31,6 +36,7 @@ const VideoPlayer = ({ options, onReady }) => {
     };
   }, [options, onReady]);
 
+  // ✅ YOU NEED THIS
   return (
     <div data-vjs-player className="w-full h-full">
       <video

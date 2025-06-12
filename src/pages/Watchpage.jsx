@@ -1,30 +1,32 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import videojs from "video.js";
 import { VideoPlayer } from "../features";
 import { Comment, VideoCardCompact } from "../components/";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Watchpage = ({ vid: video, suggestedVideos }) => {
+const Watchpage = ({ suggestedVideos }) => {
   const playerRef = useRef(null);
-  const [showMore, setShowMore] = useState(false);
   const path = useLocation();
-  const [vidLink, setVidLink] = useState("");
-
+  const [vid, setVid] = useState({});
   const arr = path.pathname.split("/");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   async function fetchVideo() {
     try {
       const res = await fetch(`http://localhost:8000/api/v1/videos/${arr[2]}`, {
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODQ0NzExYWM5NTY0MmFmOGMwY2RjODEiLCJlbWFpbCI6Im5pc2FyZzRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJuaXNhcmc0IiwiZnVsbE5hbWUiOiJOaXNhcmcgQmhhbWF0IiwiaWF0IjoxNzQ5NDk2MzI5LCJleHAiOjE3NDk1ODI3Mjl9.UCA2YmXzTcnM8iuO0xPe_JWT0df5UnzAxlyupG7EEC0",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODQ0NzExYWM5NTY0MmFmOGMwY2RjODEiLCJlbWFpbCI6Im5pc2FyZzRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJuaXNhcmc0IiwiZnVsbE5hbWUiOiJOaXNhcmcgQmhhbWF0IiwiaWF0IjoxNzQ5NzQxOTgwLCJleHAiOjE3NDk4MjgzODB9.mD7QWjNGcNHJmChMSSbOv5AaOlUBAA2xSMda1QgVI0g",
         },
       });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
-
+      setVid(data.data);
       // update state with actual videos
-      setVidLink(data.data.videoFile);
     } catch (error) {
       console.error("Failed to fetch videos:", error.message);
     }
@@ -34,29 +36,23 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
     fetchVideo();
   }, []);
 
-  console.log("Video Source URL:", vidLink);
-
-  const videoPlayerOptions = {
-    controls: true,
-    responsive: true,
-    fluid: true,
-    autoplay: false,
-    sources: [
-      {
-        src: vidLink,
-        type: "video/mp4",
-      },
-    ],
-  };
-
   const handlePlayerReady = (player) => {
     playerRef.current = player;
     player.on("waiting", () => videojs.log("player is waiting"));
     player.on("dispose", () => videojs.log("player will dispose"));
   };
-  console.log("Video Link", vidLink); // Should log a full valid MP4 URL
 
   const navigate = useNavigate();
+  const videoOptions = useMemo(
+    () => ({
+      controls: true,
+      fluid: true,
+      autoplay: false,
+      sources: [{ src: vid.videoFile, type: "video/mp4" }],
+    }),
+    [vid.videoFile]
+  );
+
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}
@@ -64,16 +60,8 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
         {/* Video Player */}
         <div className="relative w-full pb-[56.25%] bg-black rounded-lg overflow-hidden">
           <div className="absolute inset-0">
-            {vidLink && vidLink.endsWith(".mp4") ? (
-              <VideoPlayer
-                options={{
-                  controls: true,
-                  fluid: true,
-                  autoplay: false,
-                  sources: [{ src: vidLink, type: "video/mp4" }],
-                }}
-                onReady={handlePlayerReady}
-              />
+            {isMounted && vid.videoFile && vid.videoFile.endsWith(".mp4") ? (
+              <VideoPlayer options={videoOptions} onReady={handlePlayerReady} />
             ) : (
               <div className="text-white text-center p-4">Loading video...</div>
             )}
@@ -81,7 +69,7 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
         </div>
 
         {/* Title */}
-        <h1 className="text-xl font-semibold text-black mt-4">{video.title}</h1>
+        <h1 className="text-xl font-semibold text-black mt-4">{vid.title}</h1>
 
         {/* Channel + Subscribe */}
         <div className="flex items-center mt-4">
@@ -91,15 +79,13 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
             className="flex items-center gap-3 cursor-pointer"
           >
             <img
-              src={video.channelAvatar}
+              src={vid.owner?.[0]?.avatar}
               alt="Channel Avatar"
               className="w-10 h-10 rounded-full object-cover"
             />
             <div>
-              <p className="font-medium text-sm">{video.channelName}</p>
-              <p className="text-sm text-gray-500">
-                {video.subscribers} subscribers
-              </p>
+              <p className="font-medium text-sm">{vid.owner?.[0]?.username}</p>
+              <p className="text-sm text-gray-500">100k subscribers</p>
             </div>
           </div>
 
@@ -124,18 +110,10 @@ const Watchpage = ({ vid: video, suggestedVideos }) => {
 
         {/* Stats + Description */}
         <p className="text-sm text-gray-600 mt-4">
-          {video.views} • {video.uploaded}
+          {vid.views} • {vid.createdAt}
         </p>
         <div className="bg-gray-100 text-sm text-black mt-2 p-4 rounded-lg whitespace-pre-wrap">
-          {showMore
-            ? video.description
-            : video.description.slice(0, 150) + "..."}
-          <button
-            className="text-blue-600 font-medium ml-2"
-            onClick={() => setShowMore(!showMore)}
-          >
-            {showMore ? "Show less" : "Show more"}
-          </button>
+          {vid.description}
         </div>
 
         <Comment />
