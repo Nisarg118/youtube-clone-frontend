@@ -1,31 +1,33 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Uploadpage = () => {
+  const token = useSelector((state) => state.user.data?.accessToken);
   const [video, setVideo] = useState({
     title: "",
     description: "",
     thumbnail: "",
     videoFile: "",
   });
+  console.log(token);
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", video.title);
     formData.append("description", video.description);
-    formData.append("thumbnail", video.thumbnail); // must be a File or Blob
+    formData.append("thumbnail", video.thumbnail);
     formData.append("videoFile", video.videoFile);
     try {
       const res = await fetch(`http://localhost:8000/api/v1/videos`, {
         method: "POST",
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODQ0NzExYWM5NTY0MmFmOGMwY2RjODEiLCJlbWFpbCI6Im5pc2FyZzRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJuaXNhcmc0IiwiZnVsbE5hbWUiOiJOaXNhcmcgQmhhbWF0IiwiaWF0IjoxNzQ5NzQxOTgwLCJleHAiOjE3NDk4MjgzODB9.mD7QWjNGcNHJmChMSSbOv5AaOlUBAA2xSMda1QgVI0g",
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     } catch (error) {
-      console.error("Failed to fetch videos:", error.message);
+      console.error("Failed to publish video:", error.message);
     }
   }
 
