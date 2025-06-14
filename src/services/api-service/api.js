@@ -5,7 +5,6 @@ const api = axios.create({
   timeout: 5000,
 });
 
-// Adding Authorization Token
 const getAuthHeaders = () => {
   const token = sessionStorage.getItem("jwt");
   return token ? { Authorization: `Bearer ${token}` } : {};

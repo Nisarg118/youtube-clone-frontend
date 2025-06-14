@@ -36,7 +36,6 @@ const VideoPlayer = ({ options, onReady }) => {
     };
   }, [options, onReady]);
 
-  // ✅ YOU NEED THIS
   return (
     <div data-vjs-player className="w-full h-full">
       <video

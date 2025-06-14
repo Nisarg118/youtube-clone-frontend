@@ -3,6 +3,7 @@ import videojs from "video.js";
 import { VideoPlayer } from "../features";
 import { Comment, VideoCardCompact } from "../components/";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Watchpage = ({ suggestedVideos }) => {
   const playerRef = useRef(null);
@@ -10,17 +11,16 @@ const Watchpage = ({ suggestedVideos }) => {
   const [vid, setVid] = useState({});
   const arr = path.pathname.split("/");
   const [isMounted, setIsMounted] = useState(false);
+  const token = useSelector((state) => state.user.data?.accessToken);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
   async function fetchVideo() {
     try {
       const res = await fetch(`http://localhost:8000/api/v1/videos/${arr[2]}`, {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODQ0NzExYWM5NTY0MmFmOGMwY2RjODEiLCJlbWFpbCI6Im5pc2FyZzRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJuaXNhcmc0IiwiZnVsbE5hbWUiOiJOaXNhcmcgQmhhbWF0IiwiaWF0IjoxNzQ5NzQxOTgwLCJleHAiOjE3NDk4MjgzODB9.mD7QWjNGcNHJmChMSSbOv5AaOlUBAA2xSMda1QgVI0g",
+          Authorization: `Bearer ${token}`,
         },
       });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);

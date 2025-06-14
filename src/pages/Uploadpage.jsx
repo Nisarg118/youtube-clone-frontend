@@ -9,7 +9,6 @@ const Uploadpage = () => {
     thumbnail: "",
     videoFile: "",
   });
-  console.log(token);
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData();

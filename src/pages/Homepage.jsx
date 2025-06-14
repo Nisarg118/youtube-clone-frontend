@@ -23,7 +23,6 @@ const HomePage = () => {
   useEffect(() => {
     fetchVideos();
   }, []);
-  console.log(videos);
   return (
     <div className="min-h-screen text-white px-6 py-4">
       <h1 className="text-2xl font-bold mb-6">Home</h1>
