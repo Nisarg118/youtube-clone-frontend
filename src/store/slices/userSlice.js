@@ -1,4 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
+
+export const signUpUser = createAsyncThunk(
+  "signUpUser",
+  async (formdata, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/users/register`, {
+        method: "POST",
+        body: formdata,
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return rejectWithValue(data.message || "Registration failed");
+      }
+      return data.success;
+    } catch (error) {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+);
 
 export const loginUser = createAsyncThunk(
   "loginUser",
@@ -24,27 +44,25 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const signUpUser = createAsyncThunk(
-  "user/signUp",
-  async (formdata, { rejectWithValue }) => {
+export const logoutUser = createAsyncThunk(
+  "logoutUser",
+  async (_, thunkAPI) => {
+    const { getState, rejectWithValue } = thunkAPI;
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/users/register`, {
+      const state = getState();
+      const token =
+        state.user?.data?.accessToken ||
+        JSON.parse(localStorage.getItem("userData"))?.accessToken;
+      const res = await fetch(`http://localhost:8000/api/v1/users/logout`, {
         method: "POST",
-        body: formdata,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType?.includes("application/json")) {
-        const text = await res.text();
-        console.error("Non-JSON response:", text); // 🔍 Debug log
-        return rejectWithValue("Server didn't return JSON.");
-      }
-
       const data = await res.json();
       if (!res.ok) {
-        return rejectWithValue(data.message || "Registration failed");
+        return rejectWithValue(data.message || "Logout failed");
       }
-
       return data.success;
     } catch (error) {
       return rejectWithValue(error.message || "Something went wrong");
@@ -85,6 +103,20 @@ const userSlice = createSlice({
     });
     builder.addCase(signUpUser.rejected, (state, action) => {
       console.log("Error ", action.payload);
+      state.isLoading = false;
+      state.isError = true;
+    });
+    builder.addCase(logoutUser.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(logoutUser.fulfilled, (state) => {
+      state.data = null;
+      state.registerSuccess = false;
+      localStorage.removeItem("userData");
+      state.isLoading = false;
+      state.isError = false;
+    });
+    builder.addCase(logoutUser.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
     });

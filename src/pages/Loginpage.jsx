@@ -13,14 +13,17 @@ export default function Loginpage() {
 
   const { data, isError, isLoading } = useSelector((state) => state.user);
 
+  useEffect(() => {
+    if (data) {
+      navigate("/");
+    }
+  }, [data, navigate]);
+
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(loginUser({ username, email, password }));
+    navigate("/");
   }
-
-  useEffect(() => {
-    if (data) navigate("/");
-  }, [data, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">

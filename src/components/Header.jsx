@@ -1,13 +1,13 @@
 import { FiMenu, FiSearch, FiMic } from "react-icons/fi";
-import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import Signin from "./Signin";
 import Navbuttons from "./Navbuttons";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [signin, setSignin] = useState(true);
+  const user = useSelector((state) => state.user.data);
+
   return (
     <header className="flex flex-col pt-2 w-full ">
       {/* Top bar */}
@@ -41,7 +41,7 @@ const Header = () => {
         </div>
 
         {/* Right: Sign-in */}
-        {signin ? <Navbuttons /> : <Signin />}
+        {user ? <Navbuttons /> : <Signin />}
       </div>
     </header>
   );

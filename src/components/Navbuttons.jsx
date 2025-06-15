@@ -1,12 +1,25 @@
-import React from "react";
-import { FiPlus } from "react-icons/fi";
-import { FiBell } from "react-icons/fi";
+import React, { useState, useRef, useEffect } from "react";
+import { FiPlus, FiBell } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-
-const Navbuttons = ({}) => {
+import ProfileModal from "./profileModal";
+const Navbuttons = () => {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef();
+
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="flex items-center gap-4 mr-10">
+    <div className="flex items-center gap-4 mr-10 relative" ref={dropdownRef}>
       {/* Create Button */}
       <button
         onClick={() => navigate("/upload")}
@@ -21,14 +34,21 @@ const Navbuttons = ({}) => {
         <FiBell className="text-xl" />
       </button>
 
-      {/* Avatar */}
-      <button className="w-9 h-9 rounded-full overflow-hidden border border-gray-300">
-        <img
-          src="https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"
-          alt="User avatar"
-          className="object-cover w-full h-full"
-        />
-      </button>
+      {/* Avatar with Modal */}
+      <div className="relative">
+        <button
+          onClick={() => setOpen((prev) => !prev)}
+          className="w-9 h-9 rounded-full overflow-hidden border border-gray-300"
+        >
+          <img
+            src="https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"
+            alt="User avatar"
+            className="object-cover w-full h-full"
+          />
+        </button>
+
+        {open && <ProfileModal />}
+      </div>
     </div>
   );
 };
