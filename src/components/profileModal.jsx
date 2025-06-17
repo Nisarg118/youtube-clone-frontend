@@ -30,7 +30,10 @@ const ProfileModal = () => {
         </div>
         <hr />
         <ul className="text-sm">
-          <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+          <li
+            onClick={() => navigate("profile/dashboard")}
+            className="hover:bg-gray-100 px-4 py-2 cursor-pointer"
+          >
             YouTube Dashboard
           </li>
           <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
