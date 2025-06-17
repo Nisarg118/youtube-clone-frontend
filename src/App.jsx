@@ -1,20 +1,25 @@
+import { Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import { MainLayout } from "./layouts";
-import {
-  Homepage,
-  Aboutpage,
-  Watchpage,
-  Subscriptionpage,
-  Shortspage,
-  Historypage,
-  Likedpage,
-  Playlistspage,
-  Loginpage,
-  Signuppage,
-  Uploadpage,
-  Channelpage,
-} from "./pages";
-import { Route, Routes } from "react-router-dom";
-function App() {
+import Spinner from "./components/Spinner"; // Loading fallback
+import CheckAuth from "./utils/checkAuth";
+
+const Homepage = lazy(() => import("./pages/Homepage"));
+const Aboutpage = lazy(() => import("./pages/Aboutpage"));
+const Historypage = lazy(() => import("./pages/Historypage"));
+const Likedpage = lazy(() => import("./pages/Likedpage"));
+const Playlistspage = lazy(() => import("./pages/Playlistspage"));
+const Loginpage = lazy(() => import("./pages/Loginpage"));
+const Signuppage = lazy(() => import("./pages/Signuppage"));
+const Uploadpage = lazy(() => import("./pages/Uploadpage"));
+const Channelpage = lazy(() => import("./pages/Channelpage"));
+const Dashboard = lazy(() => import("./pages/Dashboardpage"));
+const Watchpage = lazy(() => import("./pages/Watchpage"));
+const Subscriptionpage = lazy(() => import("./pages/Subscriptionpage"));
+const Shortspage = lazy(() => import("./pages/Shortspage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+export default function App() {
   const exampleVideo = {
     thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
     title: "React Crash Course React Crash course",
@@ -30,28 +35,40 @@ function App() {
     ...exampleVideo,
     title: `${exampleVideo.title} #${i + 1}`,
   }));
-
   return (
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Homepage />} />
-        <Route path="about" element={<Aboutpage />} />
-        <Route path="history" element={<Historypage />} />
-        <Route path="likedVideos" element={<Likedpage />} />
-        <Route path="playlists" element={<Playlistspage />} />
-        <Route path="login" element={<Loginpage />} />
-        <Route path="signup" element={<Signuppage />} />
-        <Route path="upload" element={<Uploadpage />} />
-        <Route path="channel" element={<Channelpage />}></Route>
+    <Suspense fallback={<Spinner />}>
+      <Routes>
         <Route
-          path="watch/:id"
-          element={<Watchpage suggestedVideos={suggestedVideos} />}
-        />
-        <Route path="subscriptions" element={<Subscriptionpage />} />
-        <Route path="shorts" element={<Shortspage />} />
-      </Route>
-    </Routes>
+          path="/"
+          element={
+            <CheckAuth>
+              <MainLayout />
+            </CheckAuth>
+          }
+        >
+          <Route index element={<Homepage />} />
+
+          <Route path="login" element={<Loginpage />} />
+          <Route path="signup" element={<Signuppage />} />
+
+          <Route path="about" element={<Aboutpage />} />
+          <Route
+            path="watch/:id"
+            element={<Watchpage suggestedVideos={suggestedVideos} />}
+          />
+          <Route path="shorts" element={<Shortspage />} />
+          <Route path="channel" element={<Channelpage />} />
+          <Route path="upload" element={<Uploadpage />} />
+          <Route path="profile/dashboard" element={<Dashboard />} />
+          <Route path="history" element={<Historypage />} />
+          <Route path="likedVideos" element={<Likedpage />} />
+          <Route path="playlists" element={<Playlistspage />} />
+          <Route path="subscriptions" element={<Subscriptionpage />} />
+
+          {/* Fallback */}
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }
-
-export default App;

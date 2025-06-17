@@ -1,24 +1,13 @@
-import axios from "axios";
+export async function refreshAccessToken() {
+  const res = await fetch("http://localhost:8000/api/v1/users/refresh-token", {
+    method: "POST",
+    credentials: "include", // so cookie with refresh token is sent
+  });
 
-const api = axios.create({
-  baseURL: "https://dummyjson.com/",
-  timeout: 5000,
-});
-
-const getAuthHeaders = () => {
-  const token = sessionStorage.getItem("jwt");
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
-
-export const apiRequest = async (config = {}) => {
-  try {
-    const response = await api({
-      ...config,
-      headers: { ...config.headers, ...getAuthHeaders() },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("API request error:", error);
-    throw error;
+  if (!res.ok) {
+    throw new Error("Failed to refresh");
   }
-};
+
+  const data = await res.json();
+  return data;
+}

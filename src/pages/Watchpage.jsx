@@ -35,7 +35,7 @@ const Watchpage = ({ suggestedVideos }) => {
   useEffect(() => {
     fetchVideo();
   }, []);
-
+  console.log(token);
   const handlePlayerReady = (player) => {
     playerRef.current = player;
     player.on("waiting", () => videojs.log("player is waiting"));

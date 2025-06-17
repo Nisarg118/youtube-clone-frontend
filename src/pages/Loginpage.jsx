@@ -11,13 +11,7 @@ export default function Loginpage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { data, isError, isLoading } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    if (data) {
-      navigate("/");
-    }
-  }, [data, navigate]);
+  const { isError, isLoading } = useSelector((state) => state.user);
 
   function handleSubmit(e) {
     e.preventDefault();

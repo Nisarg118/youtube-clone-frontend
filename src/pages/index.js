@@ -10,6 +10,8 @@ import Loginpage from "./Loginpage";
 import Signuppage from "./Signuppage";
 import Uploadpage from "./Uploadpage";
 import Channelpage from "./Channelpage";
+import Dashboard from "./Dashboardpage";
+import NotFound from "./NotFound";
 export {
   Homepage,
   Aboutpage,
@@ -23,4 +25,6 @@ export {
   Signuppage,
   Uploadpage,
   Channelpage,
+  Dashboard,
+  NotFound,
 };

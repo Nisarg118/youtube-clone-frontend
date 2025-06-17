@@ -12,6 +12,7 @@ import Comment from "./Comment";
 import Signin from "./Signin";
 import ChannelInfo from "./ChannelInfo";
 import Navbuttons from "./Navbuttons";
+import Spinner from "./Spinner";
 export {
   Tags,
   Searchbar,
@@ -28,4 +29,5 @@ export {
   Signin,
   ChannelInfo,
   Navbuttons,
+  Spinner,
 };

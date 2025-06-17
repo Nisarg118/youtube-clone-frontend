@@ -1,3 +1,3 @@
-import { apiRequest } from "./api";
+import { refreshAccessToken } from "./api";
 
-export { apiRequest };
+export { refreshAccessToken };

@@ -34,7 +34,7 @@ const ProfileModal = () => {
             YouTube Dashboard
           </li>
           <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
-            Settings
+            Profile settings
           </li>
           <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
             Appearance: Light
