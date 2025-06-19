@@ -1,27 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VideoCardCompact } from "../components";
+import { useDispatch } from "react-redux";
+import { getAllVideosOfChannel } from "../store/slices/videoSlice";
 
 export default function Dashboardpage() {
-  const [videos, setVideos] = useState([
-    {
-      id: 1,
-      title: "Learn React in 10 Minutes",
-      thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
-      channelName: "CodeWithAI",
-      views: "1.2M views",
-      uploaded: "2 weeks ago",
-      duration: "12:34",
-    },
-    {
-      id: 2,
-      title: "JavaScript Async/Await Explained",
-      thumbnail: "https://i.ytimg.com/vi/PoRJizFvM7s/maxresdefault.jpg",
-      channelName: "DevSimplified",
-      views: "834K views",
-      uploaded: "1 month ago",
-      duration: "8:20",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const [videos, setVideos] = useState([]);
+  const savedUser = JSON.parse(localStorage.getItem("userData"));
+  const id = savedUser.user._id;
+  async function fetchVideos() {
+    const resultAction = await dispatch(getAllVideosOfChannel(id));
+    try {
+      if (getAllVideosOfChannel.fulfilled.match(resultAction)) {
+        setVideos(resultAction.payload);
+      }
+    } catch (error) {
+      console.log("Error while fetching videos ", error);
+    }
+  }
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-200">
       <div className="pt-20 max-w-7xl mx-auto px-4">
