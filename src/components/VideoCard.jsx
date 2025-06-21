@@ -87,7 +87,7 @@ const VideoCardCompact = ({ video }) => {
           {video.channelName}
         </p>
         <p className="text-xs text-[#606060]">
-          {video.views} • {video.uploaded}
+          {video.views} Views • {video.createdAt}
         </p>
       </div>
     </div>

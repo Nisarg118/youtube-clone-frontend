@@ -28,6 +28,7 @@ export const getAllVideosOfChannel = createAsyncThunk(
     }
   }
 );
+
 const videoSlice = createSlice({
   name: "Video",
   initialState: {

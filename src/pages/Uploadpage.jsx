@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const Uploadpage = () => {
-  const token = useSelector((state) => state.user.data?.accessToken);
+  const user = useSelector((state) => state.user.data);
+  const token = user?.accessToken;
   const [video, setVideo] = useState({
     title: "",
     description: "",
