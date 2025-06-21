@@ -1,65 +1,66 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useLocation } from "react-router-dom";
 import isTokenExpired from "./isTokenExpired";
 import { refreshAccessToken } from "../services/api-service";
-import { Navigate, useLocation } from "react-router-dom";
+import Spinner from "../components/Spinner"; // Optional loading spinner
 
 const CheckAuth = ({ children }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-
-  const user = useSelector((state) => state.user.data); // Adjust this based on your store
+  const user = useSelector((state) => state.user.data);
   const token = user?.accessToken;
 
-  const [checked, setChecked] = useState(false);
-  const [validToken, setValidToken] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); // ✅ loading flag
 
   useEffect(() => {
     const verifyToken = async () => {
-      try {
-        if (!token || isTokenExpired(token)) {
+      if (!token) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        return;
+      }
+
+      if (isTokenExpired(token)) {
+        try {
           const { accessToken } = await refreshAccessToken();
+
           if (accessToken) {
+            const updatedUser = { ...(user || {}), accessToken };
             dispatch({
               type: "loginUser/fulfilled",
-              payload: { ...user, accessToken },
+              payload: updatedUser,
             });
-            localStorage.setItem(
-              "userData",
-              JSON.stringify({ ...user, accessToken })
-            );
-            setValidToken(true);
+            localStorage.setItem("userData", JSON.stringify(updatedUser));
+            setIsAuthenticated(true);
           } else {
             dispatch({ type: "logoutUser" });
-            setValidToken(false);
+            setIsAuthenticated(false);
           }
-        } else {
-          setValidToken(true);
+        } catch {
+          dispatch({ type: "logoutUser" });
+          setIsAuthenticated(false);
         }
-      } catch (err) {
-        dispatch({ type: "logoutUser" });
-        setValidToken(false);
-      } finally {
-        setChecked(true);
+      } else {
+        setIsAuthenticated(true);
       }
+
+      setLoading(false); // ✅ done verifying
     };
 
     verifyToken();
-  }, [token, dispatch]);
+  }, [location.pathname]);
 
-  // Wait for token check
-  if (!checked) return null;
-
-  // Redirects
-  if (
-    location.pathname.includes("/login") ||
-    location.pathname.includes("/signup")
-  ) {
-    return validToken ? <Navigate to="/" replace /> : <>{children}</>;
+  if (loading) {
+    return <Spinner />;
   }
 
-  if (!validToken) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+  if (isAuthenticated && location.pathname.includes("login")) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

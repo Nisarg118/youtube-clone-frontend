@@ -6,10 +6,9 @@ const ProfileModal = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  async function handleLogout() {
+  function handleLogout() {
     try {
-      await dispatch(logoutUser()).unwrap();
-      navigate("/login");
+      dispatch(logoutUser()).then(() => navigate("/login"));
     } catch (err) {
       console.error("Logout failed:", err);
     }

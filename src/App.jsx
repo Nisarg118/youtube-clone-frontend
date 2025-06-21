@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 import { MainLayout } from "./layouts";
 import Spinner from "./components/Spinner"; // Loading fallback
 import CheckAuth from "./utils/checkAuth";
-
+import PublicOnlyRoute from "./utils/PublicOnlyRoute";
 const Homepage = lazy(() => import("./pages/Homepage"));
 const Aboutpage = lazy(() => import("./pages/Aboutpage"));
 const Historypage = lazy(() => import("./pages/Historypage"));
@@ -39,6 +39,23 @@ export default function App() {
     <Suspense fallback={<Spinner />}>
       <Routes>
         <Route
+          path="login"
+          element={
+            <PublicOnlyRoute>
+              <Loginpage />
+            </PublicOnlyRoute>
+          }
+        />
+
+        <Route
+          path="signup"
+          element={
+            <PublicOnlyRoute>
+              <Signuppage />
+            </PublicOnlyRoute>
+          }
+        />
+        <Route
           path="/"
           element={
             <CheckAuth>
@@ -47,9 +64,6 @@ export default function App() {
           }
         >
           <Route index element={<Homepage />} />
-
-          <Route path="login" element={<Loginpage />} />
-          <Route path="signup" element={<Signuppage />} />
 
           <Route path="about" element={<Aboutpage />} />
           <Route

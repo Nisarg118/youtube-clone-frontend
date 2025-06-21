@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/slices/userSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Loginpage() {
   const navigate = useNavigate();
@@ -15,8 +15,20 @@ export default function Loginpage() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(loginUser({ username, email, password }));
-    navigate("/");
+    dispatch(loginUser({ username, email, password }))
+      .then((data) => {
+        console.log("THUNK DATA:", data);
+
+        if (data?.payload?.accessToken) {
+          console.log("✅ Navigation trigger");
+          navigate("/");
+        } else {
+          console.log("❌ Login failed or invalid payload");
+        }
+      })
+      .catch((err) => {
+        console.error("❌ Unexpected error", err);
+      });
   }
 
   return (

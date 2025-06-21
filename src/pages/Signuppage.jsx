@@ -28,7 +28,10 @@ export default function Signuppage() {
     if (avatar) formdata.append("avatar", avatar);
     if (coverImage) formdata.append("coverImage", coverImage);
 
-    dispatch(signUpUser(formdata));
+    dispatch(signUpUser(formdata)).then((data) => {
+      if (data?.payload?.success) navigate("/login");
+      console.log(data);
+    });
   }
 
   useEffect(() => {

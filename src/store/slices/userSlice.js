@@ -31,6 +31,14 @@ export const loginUser = createAsyncThunk(
         body: JSON.stringify({ username, email, password }),
       });
 
+      const contentType = res.headers.get("content-type");
+
+      if (!contentType || !contentType.includes("application/json")) {
+        // Server returned HTML or something weird
+        const text = await res.text();
+        return rejectWithValue("Invalid response from server:\n" + text);
+      }
+
       const data = await res.json();
       if (!res.ok) {
         return rejectWithValue(data.message || "Login failed");
