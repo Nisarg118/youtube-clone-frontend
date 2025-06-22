@@ -14,14 +14,19 @@ const channels = [...Array(12)].map((_, i) => ({
 }));
 
 const exampleVideo = {
+  id: 1,
   thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
   title: "React Crash Course",
-  channelName: "CodeWithAI",
-  channelAvatar:
-    "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
-  views: "1.2M views",
-  uploaded: "2 weeks ago",
-  duration: "12:34", // 🕒 Add this
+  views: "1.2M",
+  createdAt: "2 weeks ago",
+  duration: "12:34",
+  owner: [
+    {
+      avatar:
+        "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
+      username: "CodeWithAI",
+    },
+  ],
 };
 
 const Subscriptionpage = () => {
@@ -30,6 +35,7 @@ const Subscriptionpage = () => {
 
   const navigate = useNavigate();
   const videos = Array.from({ length: 21 }, (_, i) => ({
+    id: i + 1,
     ...exampleVideo,
     title: `${exampleVideo.title} #${i + 1}`,
   }));

@@ -13,3 +13,16 @@
 .scroll-smooth {
   scroll-behavior: smooth;
 }
+
+.video-js {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: black !important;
+}
+
+.video-js .vjs-tech {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  background-color: black !important;
+}

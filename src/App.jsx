@@ -4,6 +4,7 @@ import { MainLayout } from "./layouts";
 import Spinner from "./components/Spinner"; // Loading fallback
 import CheckAuth from "./utils/checkAuth";
 import PublicOnlyRoute from "./utils/PublicOnlyRoute";
+import { EditModal } from "./components";
 const Homepage = lazy(() => import("./pages/Homepage"));
 const Aboutpage = lazy(() => import("./pages/Aboutpage"));
 const Historypage = lazy(() => import("./pages/Historypage"));
@@ -73,6 +74,7 @@ export default function App() {
           <Route path="shorts" element={<Shortspage />} />
           <Route path="channel" element={<Channelpage />} />
           <Route path="upload" element={<Uploadpage />} />
+          <Route path="edit/:id" element={<EditModal />} />
           <Route path="profile/dashboard" element={<Dashboard />} />
           <Route path="history" element={<Historypage />} />
           <Route path="likedVideos" element={<Likedpage />} />

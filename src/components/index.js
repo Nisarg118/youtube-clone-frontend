@@ -13,6 +13,7 @@ import Signin from "./Signin";
 import ChannelInfo from "./ChannelInfo";
 import Navbuttons from "./Navbuttons";
 import Spinner from "./Spinner";
+import EditModal from "./editModal";
 export {
   Tags,
   Searchbar,
@@ -30,4 +31,5 @@ export {
   ChannelInfo,
   Navbuttons,
   Spinner,
+  EditModal,
 };

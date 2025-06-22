@@ -2,23 +2,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import videojs from "video.js";
 import { VideoPlayer } from "../features";
 import { Comment, VideoCardCompact } from "../components/";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Watchpage = ({ suggestedVideos }) => {
+  const { id } = useParams();
   const playerRef = useRef(null);
-  const path = useLocation();
   const [vid, setVid] = useState({});
-  const arr = path.pathname.split("/");
-  const [isMounted, setIsMounted] = useState(false);
-  const token = useSelector((state) => state.user.data?.accessToken);
+  const user = useSelector((state) => state.user.data);
+  const token = user?.accessToken;
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
   async function fetchVideo() {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/videos/${arr[2]}`, {
+      const res = await fetch(`http://localhost:8000/api/v1/videos/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,11 +27,14 @@ const Watchpage = ({ suggestedVideos }) => {
       console.error("Failed to fetch videos:", error.message);
     }
   }
+  console.log("Video state:", vid);
 
   useEffect(() => {
-    fetchVideo();
-  }, []);
-  console.log(token);
+    if (id && token) {
+      fetchVideo();
+    }
+  }, [id, token]);
+
   const handlePlayerReady = (player) => {
     playerRef.current = player;
     player.on("waiting", () => videojs.log("player is waiting"));
@@ -58,14 +57,8 @@ const Watchpage = ({ suggestedVideos }) => {
       {/* LEFT SECTION */}
       <div className="flex-1">
         {/* Video Player */}
-        <div className="relative w-full pb-[56.25%] bg-black rounded-lg overflow-hidden">
-          <div className="absolute inset-0">
-            {isMounted && vid.videoFile && vid.videoFile.endsWith(".mp4") ? (
-              <VideoPlayer options={videoOptions} onReady={handlePlayerReady} />
-            ) : (
-              <div className="text-white text-center p-4">Loading video...</div>
-            )}
-          </div>
+        <div className="w-full aspect-video bg-black rounded-lg overflow-hidden">
+          <VideoPlayer options={videoOptions} onReady={handlePlayerReady} />
         </div>
 
         {/* Title */}

@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { VideoCardCompact } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllVideosOfChannel } from "../store/slices/videoSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboardpage() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [btnId, setBtnId] = useState(null);
-  const savedUser = JSON.parse(localStorage.getItem("userData"));
-  const id = savedUser.user._id;
   const user = useSelector((state) => state.user.data);
+  const id = user?.user?._id;
   const token = user?.accessToken;
 
   async function fetchVideos() {
@@ -65,7 +66,7 @@ export default function Dashboardpage() {
                 <VideoCardCompact video={video} />
                 <div className="flex justify-center gap-2 mr-4">
                   <button
-                    onClick={() => handleUpdate(video.id)}
+                    onClick={() => navigate(`/edit/${video.id}`)}
                     className="bg-yellow-300 text-black hover:bg-yellow-400 px-7 py-2 rounded"
                   >
                     Update
@@ -74,7 +75,7 @@ export default function Dashboardpage() {
                     onClick={() => handleDelete(video.id)}
                     className="bg-red-500 text-white hover:bg-red-600 px-7 py-2 rounded"
                   >
-                    {video.id === btnId && loading ? "Loading..." : "Delete"}
+                    {video.id === btnId && loading ? "Deleting..." : "Delete"}
                   </button>
                 </div>
               </div>
