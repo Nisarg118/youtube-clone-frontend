@@ -2,15 +2,22 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import videojs from "video.js";
 import { VideoPlayer } from "../features";
 import { Comment, VideoCardCompact } from "../components/";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSubscription } from "../store/slices/subscriptionSlice";
 
 const Watchpage = ({ suggestedVideos }) => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const playerRef = useRef(null);
   const [vid, setVid] = useState({});
+  const [subscriberCount, setSubscriberCount] = useState(0);
+  const [subscribed, setSubscribed] = useState();
+  const [hasToggled, setHasToggled] = useState(false);
+
   const user = useSelector((state) => state.user.data);
   const token = user?.accessToken;
+  const flag = useSelector((state) => state.subscription.isSubscribed);
 
   async function fetchVideo() {
     try {
@@ -21,19 +28,56 @@ const Watchpage = ({ suggestedVideos }) => {
       });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
-      setVid(data.data);
-      // update state with actual videos
+      setVid(data.data.video);
+      setSubscribed(data.data?.isSubscribed);
+    } catch (error) {
+      console.error("Failed to fetch video:", error.message);
+    }
+  }
+
+  async function fetchSubscribersNo() {
+    const ownerId = vid?.owner?.[0]?._id;
+
+    if (!ownerId || !token) return;
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/v1/subscriptions/c/${ownerId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      console.log(data);
+      setSubscriberCount(data.data);
     } catch (error) {
       console.error("Failed to fetch videos:", error.message);
     }
   }
-  console.log("Video state:", vid);
+
+  async function handleSubscription() {
+    const ownerId = vid?.owner?.[0]?._id;
+    if (ownerId) dispatch(toggleSubscription(ownerId));
+    setHasToggled(true);
+  }
 
   useEffect(() => {
-    if (id && token) {
-      fetchVideo();
+    fetchVideo();
+  }, []);
+
+  useEffect(() => {
+    if (vid?.owner?.[0]?._id) {
+      fetchSubscribersNo();
     }
-  }, [id, token]);
+  }, [subscribed]);
+
+  useEffect(() => {
+    if (hasToggled) {
+      setSubscribed(flag);
+    }
+  }, [flag]);
 
   const handlePlayerReady = (player) => {
     playerRef.current = player;
@@ -78,13 +122,20 @@ const Watchpage = ({ suggestedVideos }) => {
             />
             <div>
               <p className="font-medium text-sm">{vid.owner?.[0]?.username}</p>
-              <p className="text-sm text-gray-500">100k subscribers</p>
+              <p className="text-sm text-gray-500">
+                {subscriberCount} subscribers
+              </p>
             </div>
           </div>
 
           {/* Subscribe */}
-          <button className="bg-black text-white ml-20  text-sm font-semibold px-4 py-2 rounded-full hover:opacity-90">
-            Subscribe
+          <button
+            onClick={() => handleSubscription()}
+            className={`${
+              subscribed ? "bg-gray-300 text-black" : "bg-black text-white"
+            } ml-20  text-sm font-semibold px-4 py-2 rounded-full hover:opacity-90`}
+          >
+            {subscribed ? "Subscribed" : "Subscribe"}
           </button>
         </div>
 
