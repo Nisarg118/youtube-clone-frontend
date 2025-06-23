@@ -4,7 +4,10 @@ import { VideoPlayer } from "../features";
 import { Comment, VideoCardCompact } from "../components/";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleSubscription } from "../store/slices/subscriptionSlice";
+import {
+  setInitialSubscription,
+  toggleSubscription,
+} from "../store/slices/subscriptionSlice";
 
 const Watchpage = ({ suggestedVideos }) => {
   const { id } = useParams();
@@ -12,12 +15,10 @@ const Watchpage = ({ suggestedVideos }) => {
   const playerRef = useRef(null);
   const [vid, setVid] = useState({});
   const [subscriberCount, setSubscriberCount] = useState(0);
-  const [subscribed, setSubscribed] = useState();
-  const [hasToggled, setHasToggled] = useState(false);
 
   const user = useSelector((state) => state.user.data);
   const token = user?.accessToken;
-  const flag = useSelector((state) => state.subscription.isSubscribed);
+  const subscribed = useSelector((state) => state.subscription.isSubscribed);
 
   async function fetchVideo() {
     try {
@@ -29,7 +30,7 @@ const Watchpage = ({ suggestedVideos }) => {
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
       setVid(data.data.video);
-      setSubscribed(data.data?.isSubscribed);
+      dispatch(setInitialSubscription(data.data?.isSubscribed));
     } catch (error) {
       console.error("Failed to fetch video:", error.message);
     }
@@ -60,7 +61,6 @@ const Watchpage = ({ suggestedVideos }) => {
   async function handleSubscription() {
     const ownerId = vid?.owner?.[0]?._id;
     if (ownerId) dispatch(toggleSubscription(ownerId));
-    setHasToggled(true);
   }
 
   useEffect(() => {
@@ -71,13 +71,7 @@ const Watchpage = ({ suggestedVideos }) => {
     if (vid?.owner?.[0]?._id) {
       fetchSubscribersNo();
     }
-  }, [subscribed]);
-
-  useEffect(() => {
-    if (hasToggled) {
-      setSubscribed(flag);
-    }
-  }, [flag]);
+  }, [vid, subscribed]);
 
   const handlePlayerReady = (player) => {
     playerRef.current = player;
@@ -96,6 +90,7 @@ const Watchpage = ({ suggestedVideos }) => {
     [vid.videoFile]
   );
 
+  console.log(subscribed);
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}

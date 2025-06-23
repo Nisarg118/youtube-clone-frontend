@@ -1,17 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { VideoCard } from "../components";
-
-// Dummy data
-const channels = [...Array(12)].map((_, i) => ({
-  id: i,
-  name: `Channel ${i + 1}`,
-  handle: `@channel${i + 1}`,
-  subscribers: `${Math.floor(Math.random() * 1000)}K subscribers`,
-  avatar:
-    "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
-  description: "This is a sample description for the channel.",
-}));
+import { useDispatch, useSelector } from "react-redux";
+import { toggleSubscription } from "../store/slices/subscriptionSlice";
 
 const exampleVideo = {
   id: 1,
@@ -30,15 +21,40 @@ const exampleVideo = {
 };
 
 const Subscriptionpage = () => {
+  const [channels, setChannels] = useState([]);
   const [showAllChannels, setShowAllChannels] = useState(false);
   const visibleChannels = showAllChannels ? channels : channels.slice(0, 5);
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user?.data?.accessToken);
   const videos = Array.from({ length: 21 }, (_, i) => ({
     id: i + 1,
     ...exampleVideo,
     title: `${exampleVideo.title} #${i + 1}`,
   }));
+
+  async function fetchChannels() {
+    try {
+      const res = await fetch(`http://localhost:8000/api/v1/subscriptions/u/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      });
+      const data = await res.json();
+      setChannels(data?.data);
+    } catch (error) {
+      console.log("Error fetching subscribed channels : ", error);
+    }
+  }
+
+  async function handleToggle(channelId) {
+    dispatch(toggleSubscription(channelId));
+  }
+
+  useEffect(() => {
+    fetchChannels();
+  }, [channels]);
 
   return (
     <div className="w-full max-w-[1440px] px-4 py-6 mx-auto">
@@ -47,7 +63,7 @@ const Subscriptionpage = () => {
       <div className="flex flex-wrap gap-6">
         {visibleChannels.map((ch) => (
           <div
-            key={ch.id}
+            key={ch._id}
             className="flex items-center w-full sm:w-[48%] lg:w-[32%] gap-4 p-4 bg-white rounded-lg shadow-sm border"
           >
             <img
@@ -61,18 +77,21 @@ const Subscriptionpage = () => {
                 onClick={() => navigate("/channel")}
                 className="cursor-pointer font-semibold"
               >
-                {ch.name}
+                {ch.fullName}
               </p>
               <p
                 onClick={() => navigate("/channel")}
                 className="text-sm text-gray-500 cursor-pointer"
               >
-                {ch.handle} • {ch.subscribers}
+                @{ch.username} • {ch.subscribersCount} Subscribers
               </p>
               <p className="text-sm mt-1 line-clamp-2">{ch.description}</p>
             </div>
-            <button className="bg-gray-200 px-3 py-1 rounded-full text-sm">
-              🔔 Subscribed
+            <button
+              onClick={() => handleToggle(ch._id)}
+              className="bg-gray-200 px-3 py-1 rounded-full text-sm"
+            >
+              Subscribed
             </button>
           </div>
         ))}

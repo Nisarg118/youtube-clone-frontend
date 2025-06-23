@@ -40,6 +40,11 @@ const subscriptionSlice = createSlice({
     isError: false,
     isSubscribed: false,
   },
+  reducers: {
+    setInitialSubscription: (state, action) => {
+      state.isSubscribed = action.payload; // true or false from fetchVideo
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(toggleSubscription.pending, (state, action) => {
       state.isLoading = true;
@@ -57,6 +62,6 @@ const subscriptionSlice = createSlice({
   },
 });
 
-export const {} = subscriptionSlice.actions;
+export const { setInitialSubscription } = subscriptionSlice.actions;
 
 export default subscriptionSlice.reducer;
