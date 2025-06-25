@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import isTokenExpired from "./isTokenExpired";
-import { refreshAccessToken } from "../services/api-service";
 import Spinner from "../components/Spinner";
+import { refreshAccessToken } from "../services";
 
 const CheckAuth = ({ children }) => {
   const dispatch = useDispatch();

@@ -4,7 +4,7 @@ import Watchpage from "./Watchpage";
 import Subscriptionpage from "./Subscriptionpage";
 import Shortspage from "./Shortspage";
 import Historypage from "./Historypage";
-import Likedpage from "./LikedPage";
+import Likedpage from "./Likedpage";
 import Playlistspage from "./Playlistspage";
 import Loginpage from "./Loginpage";
 import Signuppage from "./Signuppage";
@@ -12,6 +12,7 @@ import Uploadpage from "./Uploadpage";
 import Channelpage from "./Channelpage";
 import Dashboard from "./Dashboardpage";
 import NotFound from "./NotFound";
+import Editpage from "./Editpage";
 export {
   Homepage,
   Aboutpage,
@@ -27,4 +28,5 @@ export {
   Channelpage,
   Dashboard,
   NotFound,
+  Editpage,
 };

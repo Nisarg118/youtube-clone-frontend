@@ -1,9 +1,7 @@
-import React from "react";
 import { VideoCard } from "../components";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const WatchHistory = ({ mockVideos }) => {
-  const location = useLocation();
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -54,7 +52,6 @@ const WatchHistory = ({ mockVideos }) => {
           ))}
         </div>
       </section>
-      ;
     </div>
   );
 };

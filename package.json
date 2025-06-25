@@ -14,7 +14,7 @@
     "@heroicons/react": "^2.2.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@videojs/themes": "^1.0.1",
-    "axios": "^1.9.0",
+    "axios": "^1.10.0",
     "jwt-decode": "^4.0.0",
     "path": "^0.12.7",
     "react": "^19.1.0",

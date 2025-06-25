@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { VideoCard } from "../components";
+import { getAllVideos } from "../services/api-service/video/video";
 
 const HomePage = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  async function fetchVideos() {
-    try {
-      const res = await fetch("http://localhost:8000/api/v1/videos");
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
-
-      // update state with actual videos
-      setVideos(data.data.videos || []);
-    } catch (error) {
-      console.error("Failed to fetch videos:", error.message);
-    } finally {
+  useEffect(() => {
+    async function fetchVideos() {
+      const fetchedVideos = await getAllVideos(
+        "http://localhost:8000/api/v1/videos"
+      );
+      setVideos(fetchedVideos);
       setLoading(false);
     }
-  }
-
-  useEffect(() => {
     fetchVideos();
   }, []);
   return (

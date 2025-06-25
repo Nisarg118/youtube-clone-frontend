@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-
+import { publishVideo } from "../services/api-service/video/video";
+import { useNavigate } from "react-router-dom";
 const Uploadpage = () => {
   const user = useSelector((state) => state.user.data);
   const token = user?.accessToken;
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [video, setVideo] = useState({
     title: "",
     description: "",
@@ -12,23 +15,20 @@ const Uploadpage = () => {
   });
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData();
     formData.append("title", video.title);
     formData.append("description", video.description);
     formData.append("thumbnail", video.thumbnail);
     formData.append("videoFile", video.videoFile);
-    try {
-      const res = await fetch(`http://localhost:8000/api/v1/videos`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-    } catch (error) {
-      console.error("Failed to publish video:", error.message);
-    }
+
+    await publishVideo({
+      url: `http://localhost:8000/api/v1/videos`,
+      formData,
+      token,
+    });
+    setLoading(false);
+    navigate("/");
   }
 
   return (
@@ -99,7 +99,7 @@ const Uploadpage = () => {
             type="submit"
             className="w-full py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition"
           >
-            Upload
+            {loading ? "Uploading..." : "Upload"}
           </button>
         </form>
       </div>

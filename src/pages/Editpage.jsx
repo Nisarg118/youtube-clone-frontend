@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-const EditModal = () => {
+import { editVideo } from "../services/api-service/video/video";
+const Editpage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.data);
@@ -20,17 +21,13 @@ const EditModal = () => {
     formData.append("title", info.title);
     formData.append("description", info.description);
     formData.append("thumbnail", info.thumbnail);
-    try {
-      const res = await fetch(`http://localhost:8000/api/v1/videos/${id}`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-    } catch (error) {
-      console.error("Failed to Edit video info :", error.message);
+    const flag = await editVideo({
+      url: `http://localhost:8000/api/v1/videos/${id}`,
+      formData,
+      token,
+    });
+    if (!flag) {
+      console.log("Error in editing video");
     }
     setLoading(false);
     navigate("/profile/dashboard");
@@ -99,4 +96,4 @@ const EditModal = () => {
   );
 };
 
-export default EditModal;
+export default Editpage;

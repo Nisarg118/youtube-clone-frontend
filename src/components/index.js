@@ -13,7 +13,7 @@ import Signin from "./Signin";
 import ChannelInfo from "./ChannelInfo";
 import Navbuttons from "./Navbuttons";
 import Spinner from "./Spinner";
-import EditModal from "./editModal";
+import EditModal from "../pages/Editpage";
 export {
   Tags,
   Searchbar,

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { VideoCardCompact } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllVideosOfChannel } from "../store/slices/videoSlice";
+import { getAllVideosOfChannelThunk } from "../store/slices/videoSlice";
 import { useNavigate } from "react-router-dom";
+import { deleteVideo } from "../services/api-service/video/video";
 
 export default function Dashboardpage() {
   const navigate = useNavigate();
@@ -15,9 +16,9 @@ export default function Dashboardpage() {
   const token = user?.accessToken;
 
   async function fetchVideos() {
-    const resultAction = await dispatch(getAllVideosOfChannel(id));
+    const resultAction = await dispatch(getAllVideosOfChannelThunk(id));
     try {
-      if (getAllVideosOfChannel.fulfilled.match(resultAction)) {
+      if (getAllVideosOfChannelThunk.fulfilled.match(resultAction)) {
         setVideos(resultAction.payload);
       }
     } catch (error) {
@@ -29,21 +30,16 @@ export default function Dashboardpage() {
     try {
       setBtnId(id);
       setLoading(true);
-      const res = await fetch(`http://localhost:8000/api/v1/videos/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+
+      const flag = await deleteVideo({
+        url: `http://localhost:8000/api/v1/videos/${id}`,
+        token,
       });
-      if (res.ok) {
+      if (flag) {
         // Filter out deleted video and update state
         const updatedVideos = videos.filter((vid) => vid.id !== id);
         setVideos(updatedVideos);
         setLoading(false);
-      } else {
-        setLoading(false);
-        const err = await res.json();
-        console.error("Delete failed:", err.message || res.statusText);
       }
     } catch (error) {
       setLoading(false);

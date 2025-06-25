@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getAllVideosOfChannel } from "../../services/api-service/video/video";
 
-export const getAllVideosOfChannel = createAsyncThunk(
-  "getAllVideosOfChannel",
+export const getAllVideosOfChannelThunk = createAsyncThunk(
+  "video/getAllVideosOfChannelThunk",
   async (channelId, thunkAPI) => {
     const { getState, rejectWithValue } = thunkAPI;
     try {
@@ -9,20 +10,11 @@ export const getAllVideosOfChannel = createAsyncThunk(
       const token =
         state.user?.data?.accessToken ||
         JSON.parse(localStorage.getItem("userData"))?.accessToken;
-      const res = await fetch(
-        `http://localhost:8000/api/v1/videos/u/${channelId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) {
-        return rejectWithValue(data.message || "Logout failed");
-      }
-      return data.data.videos;
+
+      return await getAllVideosOfChannel({
+        url: `http://localhost:8000/api/v1/videos/u/${channelId}`,
+        token,
+      });
     } catch (error) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -37,15 +29,15 @@ const videoSlice = createSlice({
     videos: [],
   },
   extraReducers: (builder) => {
-    builder.addCase(getAllVideosOfChannel.pending, (state, action) => {
+    builder.addCase(getAllVideosOfChannelThunk.pending, (state, action) => {
       state.isLoading = true;
     });
-    builder.addCase(getAllVideosOfChannel.fulfilled, (state, action) => {
+    builder.addCase(getAllVideosOfChannelThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = false;
       state.videos = action.payload;
     });
-    builder.addCase(getAllVideosOfChannel.rejected, (state, action) => {
+    builder.addCase(getAllVideosOfChannelThunk.rejected, (state, action) => {
       console.log("Error ", action.payload);
       state.isLoading = false;
       state.isError = true;

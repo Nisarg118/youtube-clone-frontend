@@ -8,6 +8,8 @@ import {
   setInitialSubscription,
   toggleSubscription,
 } from "../store/slices/subscriptionSlice";
+import { fetchVideoById } from "../services/api-service/video/video";
+import { fetchSubscribersNo } from "../services/api-service/subscription/subscription";
 
 const Watchpage = ({ suggestedVideos }) => {
   const { id } = useParams();
@@ -20,43 +22,21 @@ const Watchpage = ({ suggestedVideos }) => {
   const token = user?.accessToken;
   const subscribed = useSelector((state) => state.subscription.isSubscribed);
 
-  async function fetchVideo() {
-    try {
-      const res = await fetch(`http://localhost:8000/api/v1/videos/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
-      setVid(data.data.video);
-      dispatch(setInitialSubscription(data.data?.isSubscribed));
-    } catch (error) {
-      console.error("Failed to fetch video:", error.message);
-    }
-  }
-
-  async function fetchSubscribersNo() {
-    const ownerId = vid?.owner?.[0]?._id;
-
-    if (!ownerId || !token) return;
-    try {
-      const res = await fetch(
-        `http://localhost:8000/api/v1/subscriptions/c/${ownerId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
-      console.log(data);
-      setSubscriberCount(data.data);
-    } catch (error) {
-      console.error("Failed to fetch videos:", error.message);
-    }
-  }
+  // async function fetchVideo() {
+  //   try {
+  //     const res = await fetch(`http://localhost:8000/api/v1/videos/${id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  //     const data = await res.json();
+  //     setVid(data.data.video);
+  //     dispatch(setInitialSubscription(data.data?.isSubscribed));
+  //   } catch (error) {
+  //     console.error("Failed to fetch video:", error.message);
+  //   }
+  // }
 
   async function handleSubscription() {
     const ownerId = vid?.owner?.[0]?._id;
@@ -64,13 +44,28 @@ const Watchpage = ({ suggestedVideos }) => {
   }
 
   useEffect(() => {
+    async function fetchVideo() {
+      const data = await fetchVideoById({
+        url: `http://localhost:8000/api/v1/videos/${id}`,
+        token,
+      });
+      setVid(data.video);
+      dispatch(setInitialSubscription(data.isSubscribed));
+    }
     fetchVideo();
   }, []);
 
   useEffect(() => {
-    if (vid?.owner?.[0]?._id) {
-      fetchSubscribersNo();
+    async function fetchCount() {
+      const ownerId = vid?.owner?.[0]?._id;
+      if (!ownerId) return;
+      const count = await fetchSubscribersNo({
+        url: `http://localhost:8000/api/v1/subscriptions/c/${ownerId}`,
+        token,
+      });
+      setSubscriberCount(count);
     }
+    fetchCount();
   }, [vid, subscribed]);
 
   const handlePlayerReady = (player) => {
@@ -90,7 +85,6 @@ const Watchpage = ({ suggestedVideos }) => {
     [vid.videoFile]
   );
 
-  console.log(subscribed);
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}

@@ -1,10 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import {
-  ChannelInfo,
-  LikedVideos,
-  Playlists,
-  WatchHistory,
-} from "../components";
+import { LikedVideos, Playlists, WatchHistory } from "../components";
 
 const Aboutpage = () => {
   const user = {
@@ -22,16 +16,20 @@ const Aboutpage = () => {
     thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
     title: `Sample Video #${i + 1}`,
     channelName: user.channelName,
-    channelAvatar:
-      "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
+    owner: [
+      {
+        avatar:
+          "https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png",
+        username: user.username,
+      },
+    ],
     views: "1.5M views",
-    uploaded: "1 week ago",
+    createdAt: "1 week ago",
     duration: "12:34",
   }));
   return (
     <div className="p-6 space-y-10">
       {/* Channel Info */}
-      <ChannelInfo user={user} />
       <WatchHistory mockVideos={mockVideos} />
       <Playlists mockVideos={mockVideos} />
       <LikedVideos mockVideos={mockVideos} />
