@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { editVideo } from "../services/api-service/video/video";
+import Endpoint from "../services/api-service/endpoints";
 const Editpage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user.data);
-  const token = user?.accessToken;
   const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState({
     title: "",
@@ -22,9 +20,8 @@ const Editpage = () => {
     formData.append("description", info.description);
     formData.append("thumbnail", info.thumbnail);
     const flag = await editVideo({
-      url: `http://localhost:8000/api/v1/videos/${id}`,
+      url: Endpoint.EDIT_VIDEO_BY_ID(id),
       formData,
-      token,
     });
     if (!flag) {
       console.log("Error in editing video");

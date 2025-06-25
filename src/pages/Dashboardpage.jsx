@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllVideosOfChannelThunk } from "../store/slices/videoSlice";
 import { useNavigate } from "react-router-dom";
 import { deleteVideo } from "../services/api-service/video/video";
+import Endpoint from "../services/api-service/endpoints";
 
 export default function Dashboardpage() {
   const navigate = useNavigate();
@@ -31,10 +32,7 @@ export default function Dashboardpage() {
       setBtnId(id);
       setLoading(true);
 
-      const flag = await deleteVideo({
-        url: `http://localhost:8000/api/v1/videos/${id}`,
-        token,
-      });
+      const flag = await deleteVideo(Endpoint.DELETE_VIDEO_BY_ID(id));
       if (flag) {
         // Filter out deleted video and update state
         const updatedVideos = videos.filter((vid) => vid.id !== id);

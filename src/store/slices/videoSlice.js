@@ -1,20 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getAllVideosOfChannel } from "../../services/api-service/video/video";
+import Endpoint from "../../services/api-service/endpoints";
 
 export const getAllVideosOfChannelThunk = createAsyncThunk(
   "video/getAllVideosOfChannelThunk",
   async (channelId, thunkAPI) => {
-    const { getState, rejectWithValue } = thunkAPI;
+    const { rejectWithValue } = thunkAPI;
     try {
-      const state = getState();
-      const token =
-        state.user?.data?.accessToken ||
-        JSON.parse(localStorage.getItem("userData"))?.accessToken;
-
-      return await getAllVideosOfChannel({
-        url: `http://localhost:8000/api/v1/videos/u/${channelId}`,
-        token,
-      });
+      return await getAllVideosOfChannel(Endpoint.VIDEOS_OF_CHANNEL(channelId));
     } catch (error) {
       return rejectWithValue(error.message || "Something went wrong");
     }

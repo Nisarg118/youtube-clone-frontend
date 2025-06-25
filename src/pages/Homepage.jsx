@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { VideoCard } from "../components";
 import { getAllVideos } from "../services/api-service/video/video";
+import Endpoint from "../services/api-service/endpoints";
 
 const HomePage = () => {
   const [videos, setVideos] = useState([]);
@@ -8,9 +9,7 @@ const HomePage = () => {
 
   useEffect(() => {
     async function fetchVideos() {
-      const fetchedVideos = await getAllVideos(
-        "http://localhost:8000/api/v1/videos"
-      );
+      const fetchedVideos = await getAllVideos(Endpoint.ALLVIDEOS);
       setVideos(fetchedVideos);
       setLoading(false);
     }

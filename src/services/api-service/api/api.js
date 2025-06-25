@@ -6,11 +6,16 @@ const api = axios.create({
   timeout: 5000,
 });
 
-export const apiRequest = async (config = {}) => {
+export const apiRequest = async (config = {}, withAuth = true) => {
   try {
+    const headers = withAuth
+      ? { ...config.headers, ...getToken() }
+      : config.headers;
+
+    console.log("headers: ", headers);
     const response = await api({
       ...config,
-      headers: { ...config.headers, ...getToken() },
+      headers,
     });
     return response.data;
   } catch (error) {

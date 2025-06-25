@@ -2,9 +2,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { publishVideo } from "../services/api-service/video/video";
 import { useNavigate } from "react-router-dom";
+import Endpoint from "../services/api-service/endpoints";
 const Uploadpage = () => {
-  const user = useSelector((state) => state.user.data);
-  const token = user?.accessToken;
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [video, setVideo] = useState({
@@ -22,11 +21,7 @@ const Uploadpage = () => {
     formData.append("thumbnail", video.thumbnail);
     formData.append("videoFile", video.videoFile);
 
-    await publishVideo({
-      url: `http://localhost:8000/api/v1/videos`,
-      formData,
-      token,
-    });
+    await publishVideo({ url: Endpoint.UPLOAD_VIDEO, formData });
     setLoading(false);
     navigate("/");
   }

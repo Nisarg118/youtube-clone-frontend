@@ -10,6 +10,8 @@ import {
 } from "../store/slices/subscriptionSlice";
 import { fetchVideoById } from "../services/api-service/video/video";
 import { fetchSubscribersNo } from "../services/api-service/subscription/subscription";
+import { getToken } from "../utils/token";
+import Endpoint from "../services/api-service/endpoints";
 
 const Watchpage = ({ suggestedVideos }) => {
   const { id } = useParams();
@@ -18,8 +20,7 @@ const Watchpage = ({ suggestedVideos }) => {
   const [vid, setVid] = useState({});
   const [subscriberCount, setSubscriberCount] = useState(0);
 
-  const user = useSelector((state) => state.user.data);
-  const token = user?.accessToken;
+  const token = getToken();
   const subscribed = useSelector((state) => state.subscription.isSubscribed);
 
   // async function fetchVideo() {
@@ -45,10 +46,7 @@ const Watchpage = ({ suggestedVideos }) => {
 
   useEffect(() => {
     async function fetchVideo() {
-      const data = await fetchVideoById({
-        url: `http://localhost:8000/api/v1/videos/${id}`,
-        token,
-      });
+      const data = await fetchVideoById(Endpoint.VIDEO_BY_ID(id));
       setVid(data.video);
       dispatch(setInitialSubscription(data.isSubscribed));
     }

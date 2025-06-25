@@ -1,91 +1,94 @@
 import axios from "axios";
+import { apiRequest } from "../api/api";
+
 async function getAllVideos(url) {
   try {
-    const res = await axios.get(url);
+    const res = await apiRequest(
+      {
+        method: "GET",
+        url: url,
+      },
+      false
+    );
 
-    return res.data.data.videos || [];
+    return res.data.videos || [];
   } catch (error) {
     console.error("Failed to fetch videos:", error.message);
     return [];
   }
 }
 
-async function fetchVideoById({ url, token }) {
+async function fetchVideoById(url) {
   try {
-    const res = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const res = await apiRequest({
+      method: "GET",
+      url: url,
     });
-    return res.data.data;
+
+    return res.data;
   } catch (error) {
     console.error("Failed to fetch video:", error.message);
   }
 }
 
-async function getAllVideosOfChannel({ url, token }) {
+async function getAllVideosOfChannel(url) {
   try {
-    const res = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const res = await apiRequest({
+      method: "GET",
+      url: url,
     });
-    return res.data.data.videos;
+    return res.data.videos;
   } catch (error) {
-    console.error("Failed to fetch all videos : ", error.message);
+    console.error("Failed to fetch all videos of Channel : ", error.message);
   }
 }
 
-async function publishVideo({ url, formData, token }) {
+async function publishVideo({ url, formData }) {
   try {
-    const res = await axios.post(url, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
+    const res = await apiRequest({
+      method: "POST",
+      url: url,
+      data: formData,
     });
   } catch (error) {
     console.error("Failed to publish video:", error.message);
   }
 }
 
-async function deleteVideo({ url, token }) {
+async function deleteVideo(url) {
   try {
-    const res = await axios.delete(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const res = await apiRequest({
+      method: "DELETE",
+      url: url,
     });
-    return res.data.success;
+    return res.success;
   } catch (error) {
     console.log("Error while deleting video : ", error);
   }
 }
 
-async function editVideo({ url, formData, token }) {
+async function editVideo({ url, formData }) {
   try {
-    const res = await axios.patch(url, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
+    const res = await apiRequest({
+      method: "PATCH",
+      url: url,
+      data: formData,
     });
 
-    return res.data.success;
+    return res.success;
   } catch (error) {
     console.error("Failed to edit video:", error.message);
   }
 }
 
-async function toggleIsPublished({ url, token }) {
+async function toggleIsPublished(url) {
   try {
-    const res = await axios.patch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const res = await apiRequest({
+      method: "PATCH",
+      url: url,
     });
 
-    return res.data.success;
+    return res.success;
   } catch (error) {
     console.error("Failed to edit video:", error.message);
   }

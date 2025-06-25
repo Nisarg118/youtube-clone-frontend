@@ -17,17 +17,14 @@ export default function Loginpage() {
     e.preventDefault();
     dispatch(loginUser({ username, email, password }))
       .then((data) => {
-        console.log("THUNK DATA:", data);
-
         if (data?.payload) {
-          console.log("✅ Navigation trigger");
           navigate("/");
         } else {
-          console.log("❌ Login failed or invalid payload");
+          console.log("Login failed or invalid payload");
         }
       })
       .catch((err) => {
-        console.error("❌ Unexpected error", err);
+        console.error("Unexpected error", err);
       });
   }
 

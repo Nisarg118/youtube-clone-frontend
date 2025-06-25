@@ -4,13 +4,13 @@ import { Navigate, useLocation } from "react-router-dom";
 import isTokenExpired from "./isTokenExpired";
 import Spinner from "../components/Spinner";
 import { refreshAccessToken } from "../services";
-import { getToken } from "./token";
 
 const CheckAuth = ({ children }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const token = getToken();
+  const token = useSelector((state) => state.user.accessToken);
 
+  console.log(token);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
