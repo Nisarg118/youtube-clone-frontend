@@ -2,11 +2,10 @@ import { FiMenu, FiSearch, FiMic } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Signin from "./Signin";
 import Navbuttons from "./Navbuttons";
-import { useSelector } from "react-redux";
+import { getToken } from "../utils/token";
 
 const Header = () => {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user.data);
 
   return (
     <header className="flex flex-col pt-2 w-full ">
@@ -41,7 +40,7 @@ const Header = () => {
         </div>
 
         {/* Right: Sign-in */}
-        {user ? <Navbuttons /> : <Signin />}
+        {getToken() ? <Navbuttons /> : <Signin />}
       </div>
     </header>
   );

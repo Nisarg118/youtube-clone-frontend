@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getToken, removeToken, saveToken } from "../../utils/token";
 
 export const signUpUser = createAsyncThunk(
   "signUpUser",
@@ -40,11 +41,13 @@ export const loginUser = createAsyncThunk(
       }
 
       const data = await res.json();
+
       if (!res.ok) {
+        console.warn("Login failed:", data);
         return rejectWithValue(data.message || "Login failed");
       }
 
-      return data.data;
+      return data.data.accessToken;
     } catch (error) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -56,10 +59,7 @@ export const logoutUser = createAsyncThunk(
   async (_, thunkAPI) => {
     const { getState, rejectWithValue } = thunkAPI;
     try {
-      const state = getState();
-      const token =
-        state.user?.data?.accessToken ||
-        JSON.parse(localStorage.getItem("userData"))?.accessToken;
+      const token = getToken();
       const res = await fetch(`http://localhost:8000/api/v1/users/logout`, {
         method: "POST",
         headers: {
@@ -77,13 +77,11 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-const savedUser = JSON.parse(localStorage.getItem("userData"));
-
 const userSlice = createSlice({
   name: "User",
   initialState: {
     isLoading: false,
-    data: savedUser ? savedUser : null,
+    accessToken: getToken() || null,
     isError: false,
     registerSuccess: false,
   },
@@ -93,9 +91,9 @@ const userSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.data = action.payload;
+      state.accessToken = action.payload;
 
-      localStorage.setItem("userData", JSON.stringify(action.payload));
+      saveToken(action.payload);
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       console.log("Error ", action.payload);
@@ -117,9 +115,9 @@ const userSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(logoutUser.fulfilled, (state) => {
-      state.data = null;
+      state.accessToken = null;
       state.registerSuccess = false;
-      localStorage.removeItem("userData");
+      removeToken();
       state.isLoading = false;
       state.isError = false;
     });

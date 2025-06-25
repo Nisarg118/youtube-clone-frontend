@@ -19,7 +19,7 @@ export default function Loginpage() {
       .then((data) => {
         console.log("THUNK DATA:", data);
 
-        if (data?.payload?.accessToken) {
+        if (data?.payload) {
           console.log("✅ Navigation trigger");
           navigate("/");
         } else {
