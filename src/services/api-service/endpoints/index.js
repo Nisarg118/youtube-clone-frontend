@@ -32,6 +32,12 @@ const Endpoint = {
     `playlist/add/${videoId}/${playlistId}`,
   REMOVE_VIDEO_FROM_PLAYLIST: (videoId, playlistId) =>
     `playlist/remove/${videoId}/${playlistId}`,
+
+  //tweet
+  CREATE_TWEET: "tweets",
+  GET_USER_TWEETS: (id) => `tweets/user/${id}`,
+  UPDATE_TWEET: (id) => `tweets/${id}`,
+  DELETE_TWEET: (id) => `tweets/${id}`,
 };
 
 Object.freeze(Endpoint);
