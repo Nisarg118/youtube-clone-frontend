@@ -48,4 +48,4 @@ async function getLikedVideos(url) {
   }
 }
 
-export { toggleLike, getLikeCounts };
+export { toggleLike, getLikeCounts, getLikedVideos };

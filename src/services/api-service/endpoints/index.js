@@ -21,6 +21,17 @@ const Endpoint = {
   TOGGLELIKE: (id) => `likes/toggle/v/${id}`,
   GETLIKECOUNTS: (id) => `likes/${id}`,
   GETLIKEDVIDEOS: "likes/videos",
+
+  //playlist
+  CREATE_PLAYLIST: "playlist",
+  USER_PLAYLISTS: (id) => `playlist/user/${id}`, //This will fetch a channel's playlists
+  PLAYLIST_BY_ID: (playlistId) => `playlist/${playlistId}`,
+  UPDATE_PLAYLIST: (playlistId) => `playlist/${playlistId}`,
+  DELETE_PLAYLIST: (playlistId) => `playlist/${playlistId}`,
+  ADD_VIDEO_TO_PLAYLIST: (videoId, playlistId) =>
+    `playlist/add/${videoId}/${playlistId}`,
+  REMOVE_VIDEO_FROM_PLAYLIST: (videoId, playlistId) =>
+    `playlist/remove/${videoId}/${playlistId}`,
 };
 
 Object.freeze(Endpoint);
