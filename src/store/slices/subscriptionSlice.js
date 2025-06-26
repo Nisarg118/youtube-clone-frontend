@@ -1,32 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { changeSubscription } from "../../services/api-service/subscription/subscription";
+import Endpoint from "../../services/api-service/endpoints";
 
 export const toggleSubscription = createAsyncThunk(
   "toggleSubscription",
   async (ownerId, thunkAPI) => {
-    const { getState, rejectWithValue } = thunkAPI;
-
-    const state = getState();
-    const token = state.user?.data?.accessToken;
+    const { rejectWithValue } = thunkAPI;
     try {
-      const res = await fetch(
-        `http://localhost:8000/api/v1/subscriptions/c/${ownerId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          method: "POST",
-        }
+      const res = await changeSubscription(
+        Endpoint.CHANGESUBSCRIPTION(ownerId)
       );
-
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
-      const isSubscribed = data?.data?.isSubscribed;
-
-      if (typeof isSubscribed === "boolean") {
-        return isSubscribed;
-      } else {
-        return rejectWithValue("Invalid response structure");
-      }
+      const isSubscribed = res?.isSubscribed;
+      return isSubscribed;
     } catch (error) {
       return rejectWithValue(error.message || "Something went wrong");
     }

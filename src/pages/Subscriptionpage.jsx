@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { VideoCard } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSubscription } from "../store/slices/subscriptionSlice";
+import { getSubscribedChannels } from "../services/api-service/subscription/subscription";
+import Endpoint from "../services/api-service/endpoints";
 
 const exampleVideo = {
   id: 1,
@@ -26,7 +28,6 @@ const Subscriptionpage = () => {
   const visibleChannels = showAllChannels ? channels : channels.slice(0, 5);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.user?.data?.accessToken);
   const videos = Array.from({ length: 21 }, (_, i) => ({
     id: i + 1,
     ...exampleVideo,
@@ -35,14 +36,8 @@ const Subscriptionpage = () => {
 
   async function fetchChannels() {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/subscriptions/u/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: "GET",
-      });
-      const data = await res.json();
-      setChannels(data?.data);
+      const res = await getSubscribedChannels(Endpoint.SUBSCRIBECHANNELS);
+      setChannels(res);
     } catch (error) {
       console.log("Error fetching subscribed channels : ", error);
     }

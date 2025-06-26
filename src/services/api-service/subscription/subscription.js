@@ -1,17 +1,39 @@
-import axios from "axios";
+import { apiRequest } from "../api/api";
 
-async function fetchSubscribersNo({ url, token }) {
+async function fetchSubscribersNo(url) {
   try {
-    const res = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const res = await apiRequest({
+      method: "GET",
+      url: url,
     });
 
-    return res.data.data;
+    return res.data;
   } catch (error) {
-    console.error("Failed to fetch videos:", error.message);
+    console.error("Failed to fetch subscribers count :", error.message);
   }
 }
 
-export { fetchSubscribersNo };
+async function changeSubscription(url) {
+  try {
+    const res = await apiRequest({
+      method: "POST",
+      url: url,
+    });
+
+    return res.data;
+  } catch (error) {
+    console.error("Failed to fetch subscribers count :", error.message);
+  }
+}
+
+async function getSubscribedChannels(url) {
+  try {
+    const res = await apiRequest({
+      method: "GET",
+      url: url,
+    });
+
+    return res.data;
+  } catch (error) {}
+}
+export { fetchSubscribersNo, changeSubscription, getSubscribedChannels };

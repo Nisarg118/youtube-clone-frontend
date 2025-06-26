@@ -11,6 +11,11 @@ const Endpoint = {
   SIGNUP: "users/register",
   SIGNIN: "users/login",
   LOGOUT: "users/logout",
+
+  //subscription
+  SUBSCRIBERSNO: (id) => `subscriptions/c/${id}`,
+  CHANGESUBSCRIPTION: (id) => `subscriptions/c/${id}`,
+  SUBSCRIBECHANNELS: "subscriptions/u/",
 };
 
 Object.freeze(Endpoint);

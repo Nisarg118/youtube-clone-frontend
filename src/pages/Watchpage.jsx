@@ -10,7 +10,6 @@ import {
 } from "../store/slices/subscriptionSlice";
 import { fetchVideoById } from "../services/api-service/video/video";
 import { fetchSubscribersNo } from "../services/api-service/subscription/subscription";
-import { getToken } from "../utils/token";
 import Endpoint from "../services/api-service/endpoints";
 
 const Watchpage = ({ suggestedVideos }) => {
@@ -20,12 +19,12 @@ const Watchpage = ({ suggestedVideos }) => {
   const [vid, setVid] = useState({});
   const [subscriberCount, setSubscriberCount] = useState(0);
 
-  const token = getToken();
   const subscribed = useSelector((state) => state.subscription.isSubscribed);
+  const ownerId = useMemo(() => vid?.owner?.[0]?._id, [vid]);
 
   async function handleSubscription() {
-    const ownerId = vid?.owner?.[0]?._id;
-    if (ownerId) dispatch(toggleSubscription(ownerId));
+    if (!ownerId) return;
+    await dispatch(toggleSubscription(ownerId));
   }
 
   useEffect(() => {
@@ -39,12 +38,8 @@ const Watchpage = ({ suggestedVideos }) => {
 
   useEffect(() => {
     async function fetchCount() {
-      const ownerId = vid?.owner?.[0]?._id;
       if (!ownerId) return;
-      const count = await fetchSubscribersNo({
-        url: `http://localhost:8000/api/v1/subscriptions/c/${ownerId}`,
-        token,
-      });
+      const count = await fetchSubscribersNo(Endpoint.SUBSCRIBERSNO(ownerId));
       setSubscriberCount(count);
     }
     fetchCount();
@@ -67,7 +62,6 @@ const Watchpage = ({ suggestedVideos }) => {
     [vid.videoFile]
   );
 
-  console.log();
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}

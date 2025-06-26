@@ -9,10 +9,9 @@ async function getAllVideos(url) {
       },
       false
     );
-
     return res.data.videos || [];
   } catch (error) {
-    console.error("Failed to fetch videos:", error.message);
+    console.error("Failed to fetch all  videos:", error.message);
     return [];
   }
 }

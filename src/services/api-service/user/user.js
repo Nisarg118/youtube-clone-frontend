@@ -1,16 +1,4 @@
 import { apiRequest } from "../api/api";
-async function getCurrentUser(url) {
-  try {
-    const res = await apiRequest({
-      method: "GET",
-      url: url,
-    });
-
-    return res.data._id;
-  } catch (error) {
-    console.log("Error in getting Current User : ", error);
-  }
-}
 
 async function signUp({ url, formData }) {
   try {
@@ -62,7 +50,5 @@ async function currentUser() {
     return res.data._id;
   } catch (error) {}
 }
-
-
 
 export { signUp, logIn, logout, currentUser };
