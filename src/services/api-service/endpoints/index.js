@@ -16,6 +16,11 @@ const Endpoint = {
   SUBSCRIBERSNO: (id) => `subscriptions/c/${id}`,
   CHANGESUBSCRIPTION: (id) => `subscriptions/c/${id}`,
   SUBSCRIBECHANNELS: "subscriptions/u/",
+
+  //like
+  TOGGLELIKE: (id) => `likes/toggle/v/${id}`,
+  GETLIKECOUNTS: (id) => `likes/${id}`,
+  GETLIKEDVIDEOS: "likes/videos",
 };
 
 Object.freeze(Endpoint);
