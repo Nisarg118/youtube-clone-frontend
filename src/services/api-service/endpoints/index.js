@@ -38,6 +38,12 @@ const Endpoint = {
   GET_USER_TWEETS: (id) => `tweets/user/${id}`,
   UPDATE_TWEET: (id) => `tweets/${id}`,
   DELETE_TWEET: (id) => `tweets/${id}`,
+
+  //comment
+  ADD_COMMENT: (videoId) => `comments/${videoId}`,
+  GET_COMMENTS: (videoId) => `comments/${videoId}`,
+  UPDATE_COMMENT: (commentId) => `comments/c/${commentId}`,
+  DELETE_COMMENT: (commentId) => `comments/c/${commentId}`,
 };
 
 Object.freeze(Endpoint);
