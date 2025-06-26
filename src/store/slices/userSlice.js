@@ -1,53 +1,29 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getToken, removeToken, saveToken } from "../../utils/token";
+import { removeToken, saveToken } from "../../utils/token";
+import { logIn, logout, signUp } from "../../services/api-service/user/user";
+import Endpoint from "../../services/api-service/endpoints";
 
 export const signUpUser = createAsyncThunk(
-  "signUpUser",
-  async (formdata, { rejectWithValue }) => {
+  "user/signUpUser",
+  async (formData, { rejectWithValue }) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/users/register`, {
-        method: "POST",
-        body: formdata,
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        return rejectWithValue(data.message || "Registration failed");
-      }
-      return data.success;
+      const res = await signUp({ url: Endpoint.SIGNUP, formData });
+      return res;
     } catch (error) {
-      return rejectWithValue(error.message || "Something went wrong");
+      return rejectWithValue(
+        error.message || "Something went wrong while signing up"
+      );
     }
   }
 );
 
 export const loginUser = createAsyncThunk(
-  "loginUser",
-  async ({ username, email, password }, { rejectWithValue }) => {
+  "user/loginUser",
+  async (formData, { rejectWithValue }) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
+      const res = await logIn({ url: Endpoint.SIGNIN, formData });
 
-      const contentType = res.headers.get("content-type");
-
-      if (!contentType || !contentType.includes("application/json")) {
-        // Server returned HTML or something weird
-        const text = await res.text();
-        return rejectWithValue("Invalid response from server:\n" + text);
-      }
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        console.warn("Login failed:", data);
-        return rejectWithValue(data.message || "Login failed");
-      }
-
-      return data.data.accessToken;
+      return res;
     } catch (error) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -55,22 +31,12 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk(
-  "logoutUser",
+  "user/logoutUser",
   async (_, thunkAPI) => {
-    const { getState, rejectWithValue } = thunkAPI;
+    const { rejectWithValue } = thunkAPI;
     try {
-      const token = getToken();
-      const res = await fetch(`http://localhost:8000/api/v1/users/logout`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        return rejectWithValue(data.message || "Logout failed");
-      }
-      return data.success;
+      const res = await logout(Endpoint.LOGOUT);
+      return res;
     } catch (error) {
       return rejectWithValue(error.message || "Something went wrong");
     }
@@ -81,7 +47,7 @@ const userSlice = createSlice({
   name: "User",
   initialState: {
     isLoading: false,
-    accessToken: getToken() || null,
+    accessToken: localStorage.getItem("token") || null,
     isError: false,
     registerSuccess: false,
   },

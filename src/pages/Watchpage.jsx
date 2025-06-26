@@ -23,22 +23,6 @@ const Watchpage = ({ suggestedVideos }) => {
   const token = getToken();
   const subscribed = useSelector((state) => state.subscription.isSubscribed);
 
-  // async function fetchVideo() {
-  //   try {
-  //     const res = await fetch(`http://localhost:8000/api/v1/videos/${id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-  //     const data = await res.json();
-  //     setVid(data.data.video);
-  //     dispatch(setInitialSubscription(data.data?.isSubscribed));
-  //   } catch (error) {
-  //     console.error("Failed to fetch video:", error.message);
-  //   }
-  // }
-
   async function handleSubscription() {
     const ownerId = vid?.owner?.[0]?._id;
     if (ownerId) dispatch(toggleSubscription(ownerId));
@@ -83,6 +67,7 @@ const Watchpage = ({ suggestedVideos }) => {
     [vid.videoFile]
   );
 
+  console.log();
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}

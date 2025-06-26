@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { VideoCardCompact } from "../components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getAllVideosOfChannelThunk } from "../store/slices/videoSlice";
 import { useNavigate } from "react-router-dom";
 import { deleteVideo } from "../services/api-service/video/video";
 import Endpoint from "../services/api-service/endpoints";
+import { currentUser } from "../services/api-service/user/user";
 
 export default function Dashboardpage() {
   const navigate = useNavigate();
@@ -12,11 +13,9 @@ export default function Dashboardpage() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [btnId, setBtnId] = useState(null);
-  const user = useSelector((state) => state.user.data);
-  const id = user?.user?._id;
-  const token = user?.accessToken;
 
   async function fetchVideos() {
+    const id = await currentUser();
     const resultAction = await dispatch(getAllVideosOfChannelThunk(id));
     try {
       if (getAllVideosOfChannelThunk.fulfilled.match(resultAction)) {

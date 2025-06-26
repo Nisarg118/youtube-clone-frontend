@@ -10,7 +10,7 @@ const CheckAuth = ({ children }) => {
   const location = useLocation();
   const token = useSelector((state) => state.user.accessToken);
 
-  console.log(token);
+  console.log("token", token);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -45,12 +45,11 @@ const CheckAuth = ({ children }) => {
         const newAccessToken = await refreshAccessToken();
 
         if (newAccessToken) {
-          const updatedUser = { ...(user || {}), accessToken: newAccessToken };
           dispatch({
             type: "loginUser/fulfilled",
-            payload: updatedUser,
+            payload: newAccessToken,
           });
-          localStorage.setItem("userData", JSON.stringify(updatedUser));
+          localStorage.setItem("token", newAccessToken);
           setIsAuthenticated(true);
         } else {
           dispatch({ type: "logoutUser" });

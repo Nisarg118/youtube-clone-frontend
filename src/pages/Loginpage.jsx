@@ -15,7 +15,13 @@ export default function Loginpage() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(loginUser({ username, email, password }))
+
+    const loginPayload = {
+      username,
+      email,
+      password,
+    };
+    dispatch(loginUser(loginPayload))
       .then((data) => {
         if (data?.payload) {
           navigate("/");

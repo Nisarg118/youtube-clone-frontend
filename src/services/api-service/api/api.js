@@ -12,7 +12,6 @@ export const apiRequest = async (config = {}, withAuth = true) => {
       ? { ...config.headers, ...getToken() }
       : config.headers;
 
-    console.log("headers: ", headers);
     const response = await api({
       ...config,
       headers,

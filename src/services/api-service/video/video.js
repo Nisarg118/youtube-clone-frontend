@@ -1,4 +1,3 @@
-import axios from "axios";
 import { apiRequest } from "../api/api";
 
 async function getAllVideos(url) {
