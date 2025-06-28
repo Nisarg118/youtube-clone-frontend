@@ -4,7 +4,6 @@ import Watchpage from "./Watchpage";
 import Subscriptionpage from "./Subscriptionpage";
 import Shortspage from "./Shortspage";
 import Historypage from "./Historypage";
-import Likedpage from "./Likedpage";
 import Playlistspage from "./Playlistspage";
 import Loginpage from "./Loginpage";
 import Signuppage from "./Signuppage";
@@ -19,7 +18,6 @@ export {
   Subscriptionpage,
   Shortspage,
   Historypage,
-  Likedpage,
   Playlistspage,
   Watchpage,
   Loginpage,

@@ -8,7 +8,6 @@ import { Editpage } from "./pages";
 const Homepage = lazy(() => import("./pages/Homepage"));
 const Aboutpage = lazy(() => import("./pages/Aboutpage"));
 const Historypage = lazy(() => import("./pages/Historypage"));
-const Likedpage = lazy(() => import("./pages/Likedpage"));
 const Playlistspage = lazy(() => import("./pages/Playlistspage"));
 const Loginpage = lazy(() => import("./pages/Loginpage"));
 const Signuppage = lazy(() => import("./pages/Signuppage"));
@@ -77,7 +76,6 @@ export default function App() {
           <Route path="edit/:id" element={<Editpage />} />
           <Route path="profile/dashboard" element={<Dashboard />} />
           <Route path="history" element={<Historypage />} />
-          <Route path="likedVideos" element={<Likedpage />} />
           <Route path="playlists" element={<Playlistspage />} />
           <Route path="subscriptions" element={<Subscriptionpage />} />
 

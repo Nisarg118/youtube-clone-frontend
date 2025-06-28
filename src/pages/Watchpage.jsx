@@ -156,7 +156,7 @@ const Watchpage = ({ suggestedVideos }) => {
           {vid.description}
         </div>
 
-        <Comment />
+        <Comment videoId={id} />
       </div>
 
       {/* RIGHT SECTION: Suggested Videos */}

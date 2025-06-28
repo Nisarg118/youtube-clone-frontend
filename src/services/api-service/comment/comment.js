@@ -7,7 +7,8 @@ async function createComment({ url, formData }) {
       url: url,
       data: formData,
     });
-    return res.success;
+    console.log(res.data);
+    return res.data;
   } catch (error) {
     console.log("Error in createComment api service : ", error);
     throw error;
@@ -20,7 +21,8 @@ async function getVideoComments(url) {
       method: "GET",
       url: url,
     });
-    return res.data.paginatedComments;
+    console.log(res);
+    return res.data;
   } catch (error) {
     console.log("Error in getVideoComments api service : ", error);
     throw error;
@@ -34,7 +36,8 @@ async function updateComment({ url, formData }) {
       url: url,
       data: formData,
     });
-    return res.success;
+    console.log(res);
+    return res.comment;
   } catch (error) {
     console.log("Error in updateComment api service : ", error);
     throw error;
@@ -47,6 +50,7 @@ async function deleteComment(url) {
       method: "DELETE",
       url: url,
     });
+    console.log(res);
     return res.success;
   } catch (error) {
     console.log("Error in deleteComment api service : ", error);
