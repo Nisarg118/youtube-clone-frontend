@@ -11,6 +11,9 @@ import {
 import { fetchVideoById } from "../services/api-service/video/video";
 import { fetchSubscribersNo } from "../services/api-service/subscription/subscription";
 import Endpoint from "../services/api-service/endpoints";
+import { AiOutlineLike } from "react-icons/ai";
+import { AiFillLike } from "react-icons/ai";
+import { getLikeCounts, toggleLike } from "../services/api-service/like/like";
 
 const Watchpage = ({ suggestedVideos }) => {
   const { id } = useParams();
@@ -18,19 +21,33 @@ const Watchpage = ({ suggestedVideos }) => {
   const playerRef = useRef(null);
   const [vid, setVid] = useState({});
   const [subscriberCount, setSubscriberCount] = useState(0);
-
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const subscribed = useSelector((state) => state.subscription.isSubscribed);
   const ownerId = useMemo(() => vid?.owner?.[0]?._id, [vid]);
+  const navigate = useNavigate();
 
   async function handleSubscription() {
     if (!ownerId) return;
     await dispatch(toggleSubscription(ownerId));
   }
 
+  async function handleLike() {
+    try {
+      const res = await toggleLike(Endpoint.TOGGLE_LIKE(id));
+      setLiked(res);
+      if (res === true) setLikeCount((prev) => prev + 1);
+      else if (res === false) setLikeCount((prev) => prev - 1);
+    } catch (error) {
+      console.log("Error : ", error);
+    }
+  }
+
   useEffect(() => {
     async function fetchVideo() {
       const data = await fetchVideoById(Endpoint.VIDEO_BY_ID(id));
       setVid(data.video);
+      setLiked(data.isLikedByCurrentUser);
       dispatch(setInitialSubscription(data.isSubscribed));
     }
     fetchVideo();
@@ -45,13 +62,14 @@ const Watchpage = ({ suggestedVideos }) => {
     fetchCount();
   }, [vid, subscribed]);
 
-  const handlePlayerReady = (player) => {
-    playerRef.current = player;
-    player.on("waiting", () => videojs.log("player is waiting"));
-    player.on("dispose", () => videojs.log("player will dispose"));
-  };
+  useEffect(() => {
+    async function fetchLikeCounts() {
+      const res = await getLikeCounts(Endpoint.GET_LIKE_COUNTS(id));
+      setLikeCount(res);
+    }
+    fetchLikeCounts();
+  }, []);
 
-  const navigate = useNavigate();
   const videoOptions = useMemo(
     () => ({
       controls: true,
@@ -61,7 +79,13 @@ const Watchpage = ({ suggestedVideos }) => {
     }),
     [vid.videoFile]
   );
+  const handlePlayerReady = (player) => {
+    playerRef.current = player;
+    player.on("waiting", () => videojs.log("player is waiting"));
+    player.on("dispose", () => videojs.log("player will dispose"));
+  };
 
+  console.log("likeCount : ", likeCount);
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}
@@ -103,24 +127,30 @@ const Watchpage = ({ suggestedVideos }) => {
           >
             {subscribed ? "Subscribed" : "Subscribe"}
           </button>
-        </div>
 
-        {/* Buttons */}
-        <div className="flex items-center gap-4 mt-4">
-          <button className="bg-gray-100 text-sm px-4 py-2 rounded-full hover:bg-gray-200">
-            👍 Like
-          </button>
-          <button className="bg-gray-100 text-sm px-4 py-2 rounded-full hover:bg-gray-200">
-            🔁 Share
-          </button>
-          <button className="bg-gray-100 text-sm px-4 py-2 rounded-full hover:bg-gray-200">
-            ⬇️ Download
+          <button
+            onClick={handleLike}
+            className={`group flex items-center gap-2 ml-4 px-4 py-2 rounded-full border transition-all duration-200 ${
+              liked
+                ? "bg-blue-100 text-blue-600 border-blue-200 hover:bg-blue-200"
+                : "bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200"
+            }`}
+          >
+            {liked ? (
+              <AiFillLike className="text-xl" />
+            ) : (
+              <AiOutlineLike className="text-xl group-hover:scale-105" />
+            )}
+            <span className="text-sm font-medium">
+              {!isNaN(likeCount) ? likeCount : 0}
+            </span>
           </button>
         </div>
 
         {/* Stats + Description */}
         <p className="text-sm text-gray-600 mt-4">
-          {vid.views} • {vid.createdAt}
+          {vid.views} views • Uploaded at:{" "}
+          {new Date(vid.createdAt).toLocaleDateString()}
         </p>
         <div className="bg-gray-100 text-sm text-black mt-2 p-4 rounded-lg whitespace-pre-wrap">
           {vid.description}

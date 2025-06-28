@@ -20,6 +20,7 @@ async function logIn({ url, formData }) {
       url: url,
       data: formData,
     });
+    console.log(formData);
     console.log(res);
     return res.data.accessToken;
   } catch (error) {

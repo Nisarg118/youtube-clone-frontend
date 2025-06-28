@@ -21,6 +21,7 @@ export default function Loginpage() {
       email,
       password,
     };
+    console.log(loginPayload);
     dispatch(loginUser(loginPayload))
       .then((data) => {
         if (data?.payload) {

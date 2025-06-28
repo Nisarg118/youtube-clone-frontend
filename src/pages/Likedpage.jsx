@@ -1,6 +1,6 @@
 import React from "react";
 
-const Likedpage = () => {
+const Likedpage = ({ videos }) => {
   const liked = [
     {
       id: "vid1",

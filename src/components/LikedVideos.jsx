@@ -1,59 +1,44 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { VideoCard } from "../components";
 import { useNavigate } from "react-router-dom";
-const LikedVideos = ({ mockVideos }) => {
-  const navigate = useNavigate();
-  return (
-    <div>
-      {/* Liked Videos */}
-      <section className="space-y-2">
-        {/* Controls */}
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">Liked Videos</h3>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => navigate("/likedVideos")}
-              className="text-sm font-medium text-blue-600 hover:underline"
-            >
-              View All
-            </button>
-            <button
-              onClick={() =>
-                document.getElementById("playlists-scroll")?.scrollBy({
-                  left: -300,
-                  behavior: "smooth",
-                })
-              }
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              ←
-            </button>
-            <button
-              onClick={() =>
-                document.getElementById("playlists-scroll")?.scrollBy({
-                  left: 300,
-                  behavior: "smooth",
-                })
-              }
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              →
-            </button>
-          </div>
-        </div>
+import { getLikedVideos } from "../services/api-service/like/like";
+import Endpoint from "../services/api-service/endpoints";
 
-        {/* Scrollable container */}
-        <div
-          id="playlists-scroll"
-          className="flex overflow-x-auto scroll-smooth no-scrollbar gap-4 py-2 px-1"
-        >
-          {mockVideos.map((vid) => (
-            <div key={vid.id} className="flex-shrink-0 w-64">
-              <VideoCard video={vid} />
-            </div>
-          ))}
-        </div>
-      </section>
+const LikedVideos = () => {
+  const [videos, setVideos] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    async function fetchLikedVideos() {
+      const res = await getLikedVideos(Endpoint.GET_LIKED_VIDEOS);
+      setVideos(res);
+    }
+    fetchLikedVideos();
+  }, []);
+
+  const displayedVideos = showAll ? videos : videos.slice(0, 5);
+
+  return (
+    <div className="space-y-2">
+      {/* Header with Toggle */}
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-semibold">Liked Videos</h3>
+        {videos.length > 5 && (
+          <button
+            onClick={() => setShowAll((prev) => !prev)}
+            className="text-sm font-medium text-blue-600 hover:underline"
+          >
+            {showAll ? "View Less" : "View All"}
+          </button>
+        )}
+      </div>
+
+      {/* Grid of Videos */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {displayedVideos.map((vid) => (
+          <VideoCard key={vid._id} video={vid} />
+        ))}
+      </div>
     </div>
   );
 };

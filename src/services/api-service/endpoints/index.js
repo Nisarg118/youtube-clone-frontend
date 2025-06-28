@@ -18,9 +18,9 @@ const Endpoint = {
   SUBSCRIBECHANNELS: "subscriptions/u/",
 
   //like
-  TOGGLELIKE: (id) => `likes/toggle/v/${id}`,
-  GETLIKECOUNTS: (id) => `likes/${id}`,
-  GETLIKEDVIDEOS: "likes/videos",
+  TOGGLE_LIKE: (mediaId) => `likes/toggle/v/${mediaId}?targetType=video`, //here mediaId can be of video as well as post
+  GET_LIKE_COUNTS: (mediaId) => `likes/${mediaId}?targetType=video`,
+  GET_LIKED_VIDEOS: "likes/videos",
 
   //playlist
   CREATE_PLAYLIST: "playlist",
