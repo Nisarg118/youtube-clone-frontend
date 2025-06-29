@@ -17,9 +17,7 @@ const HomePage = () => {
   }, []);
   return (
     <div className="min-h-screen text-white px-6 py-4">
-      <h1 className="text-2xl font-bold mb-6">Home</h1>
-
-      <div className="w-full max-w-screen-xl mx-auto px-4">
+      <div className="w-full mt-3 max-w-screen-xl mx-auto px-4">
         {loading ? (
           <p>Loading...</p>
         ) : videos.length === 0 ? (

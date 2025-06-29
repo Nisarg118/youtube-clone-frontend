@@ -10,7 +10,7 @@ import LikedVideos from "./LikedVideos";
 import Playlists from "./Playlists";
 import Comment from "./Comment";
 import Signin from "./Signin";
-import ChannelInfo from "./ChannelInfo";
+import ChannelInfo from "./Channel/ChannelInfo";
 import Navbuttons from "./Navbuttons";
 import Spinner from "./Spinner";
 import EditModal from "../pages/Editpage";

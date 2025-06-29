@@ -27,23 +27,26 @@ const VideoCard = ({ video }) => {
       {/* Video Info */}
       <div className="flex pt-3 gap-3">
         {/* Channel Avatar */}
-        <img
-          src={video.owner[0].avatar}
-          alt="Channel Avatar"
-          className="w-9 h-9 rounded-full object-cover"
-        />
-
+        {video?.owner?.[0]?.avatar && (
+          <img
+            src={video.owner[0].avatar}
+            alt="Channel Avatar"
+            className="w-9 h-9 rounded-full object-cover"
+          />
+        )}
         {/* Text Info */}
         <div className="flex flex-col text-sm">
           <h3 className="font-medium text-black leading-snug line-clamp-2">
             {video.title}
           </h3>
-          <p
-            onClick={() => navigate("/channel")}
-            className="text-gray-600 mt-0.5"
-          >
-            {video.owner[0].username}
-          </p>
+          {video?.owner?.[0] && (
+            <p
+              onClick={() => navigate(`/channel/${video.owner[0]._id}/videos`)}
+              className="text-gray-600 mt-0.5"
+            >
+              {video.owner[0].username}
+            </p>
+          )}
           <p className="text-gray-600">
             {video.views} Views • {video.createdAt}
           </p>
@@ -81,7 +84,7 @@ const VideoCardCompact = ({ video }) => {
           {video.title}
         </h3>
         <p
-          onClick={() => navigate("/channel")}
+          onClick={() => navigate(`/channel/${video.owner[0]?._id}`)}
           className="text-xs text-[#606060] mt-1"
         >
           {video.channelName}

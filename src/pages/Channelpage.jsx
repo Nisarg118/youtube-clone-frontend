@@ -1,44 +1,68 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { ChannelInfo } from "../components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams, Outlet } from "react-router-dom";
+import { getUserChannelProfile } from "../services/api-service/user/user";
+import Endpoint from "../services/api-service/endpoints";
 
-const user = {
-  avatar: "https://i.pravatar.cc/150?img=12",
-  channelName: "Code with Dev",
-  username: "devcode123",
-  subscribers: "12.3K",
-  totalVideos: 42,
-  joinedAt: "2023-08-01T00:00:00Z",
-  description: `Welcome to Code with Dev! 🚀\n\nWe cover fullstack tutorials, JavaScript, React, and more.`,
-};
-
-const arr = [
-  { element: "Home", path: "/channel" },
-
-  { element: "Videos", path: "/channel/videos" },
-  { element: "Playlists", path: "/playlists" },
-  { element: "Posts", path: "/posts" },
+const tabs = [
+  { element: "Videos", path: "videos" },
+  { element: "Playlists", path: "playlists" },
+  { element: "Posts", path: "posts" },
 ];
 
 const Channelpage = () => {
+  const { userId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({});
+  useEffect(() => {
+    async function fetchCurrentChannelData() {
+      try {
+        const res = await getUserChannelProfile(
+          Endpoint.USERCHANNELPROFILE(userId)
+        );
+        console.log(res);
+        setUserData(res);
+      } catch (error) {
+        console.log("Error while fetching user channel data ", error);
+      }
+    }
+
+    fetchCurrentChannelData();
+  }, []);
 
   return (
-    <div className="border-b-2">
-      <ChannelInfo user={user} />
-      <div className="flex mt-4 gap-16">
-        {arr.map((element) => (
-          <p
-            className={`p-2 rounded-md  text-xl cursor-pointer      
-              ${
-                location.pathname === element.path
-                  ? "bg-gray-400"
-                  : "hover:bg-gray-100"
+    <div>
+      {/* Channel Info */}
+      <ChannelInfo user={userData} />
+
+      {/* Tabs */}
+      <div className="flex gap-10 px-6 border-b mt-4">
+        {tabs.map((tab) => {
+          const fullPath = `/channel/${userId}/${tab.path}`;
+          const isActive =
+            location.pathname === fullPath ||
+            (tab.path === "" && location.pathname === `/channel/${userId}`);
+
+          return (
+            <button
+              key={tab.path}
+              onClick={() => navigate(fullPath)}
+              className={`relative py-3 text-sm font-medium transition-colors duration-200 ${
+                isActive
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-600 hover:text-black"
               }`}
-          >
-            {element.element}
-          </p>
-        ))}
+            >
+              {tab.element}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Render tab content */}
+      <div className="p-6">
+        <Outlet context={{ userId }} />
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ const Endpoint = {
   SIGNUP: "users/register",
   SIGNIN: "users/login",
   LOGOUT: "users/logout",
+  USERCHANNELPROFILE: (userId) => `users/c/${userId}`,
 
   //subscription
   SUBSCRIBERSNO: (id) => `subscriptions/c/${id}`,

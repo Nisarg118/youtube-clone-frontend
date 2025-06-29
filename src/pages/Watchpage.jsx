@@ -102,7 +102,7 @@ const Watchpage = ({ suggestedVideos }) => {
         <div className="flex items-center mt-4">
           {/* Channel Info */}
           <div
-            onClick={() => navigate("/channel")}
+            onClick={() => navigate(`/channel/${vid.owner?.[0]._id}/videos`)}
             className="flex items-center gap-3 cursor-pointer"
           >
             <img

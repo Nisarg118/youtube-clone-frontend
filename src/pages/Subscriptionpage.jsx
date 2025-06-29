@@ -65,17 +65,14 @@ const Subscriptionpage = () => {
               src={ch.avatar}
               alt={ch.name}
               className="w-14 h-14 rounded-full cursor-pointer"
-              onClick={() => navigate("/channel")}
+              onClick={() => navigate(`/channel/${ch._id}/videos`)}
             />
             <div className="flex-1">
-              <p
-                onClick={() => navigate("/channel")}
-                className="cursor-pointer font-semibold"
-              >
+              <p v className="cursor-pointer font-semibold">
                 {ch.fullName}
               </p>
               <p
-                onClick={() => navigate("/channel")}
+                onClick={() => navigate(`/channel/${ch._id}/videos`)}
                 className="text-sm text-gray-500 cursor-pointer"
               >
                 @{ch.username} • {ch.subscribersCount} Subscribers

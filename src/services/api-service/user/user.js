@@ -52,4 +52,18 @@ async function currentUser() {
   } catch (error) {}
 }
 
-export { signUp, logIn, logout, currentUser };
+async function getUserChannelProfile(url) {
+  try {
+    const res = await apiRequest({
+      method: "GET",
+      url: url,
+    });
+    console.log(res);
+    return res.data;
+  } catch (error) {
+    console.log("Error in getUserChannelProfile api service : ", error);
+    throw error;
+  }
+}
+
+export { signUp, logIn, logout, currentUser, getUserChannelProfile };

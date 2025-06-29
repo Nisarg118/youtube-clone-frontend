@@ -14,6 +14,7 @@ const Comment = ({ videoId }) => {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
   const [deleteLoading, setDeleteLoading] = useState(false);
+
   async function handleComment() {
     setLoading(true);
     if (!comment.trim()) return;
