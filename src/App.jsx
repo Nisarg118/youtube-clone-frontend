@@ -85,7 +85,7 @@ export default function App() {
           <Route path="edit/:id" element={<Editpage />} />
           <Route path="profile/dashboard" element={<Dashboard />} />
           <Route path="history" element={<Historypage />} />
-          <Route path="playlists" element={<Playlistspage />} />
+          <Route path="playlists/:playlistId" element={<Playlistspage />} />
           <Route path="subscriptions" element={<Subscriptionpage />} />
 
           {/* ✅ Channel nested tabs */}

@@ -1,54 +1,76 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { VideoCard } from "../components"; // assuming you already have this
+import { getPlaylistById } from "../services/api-service/playlist/playlist"; // your API
+import Endpoint from "../services/api-service/endpoints";
 
-const Playlistspage = () => {
-  const playlists = [
-    {
-      id: "vid1",
-      title: "Learn React in 10 Minutes",
-      thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
-      watchedAt: "2025-05-28T18:00:00Z",
-    },
-    {
-      id: "vid2",
-      title: "Understanding JavaScript Closures",
-      thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
-      watchedAt: "2025-05-29T09:30:00Z",
-    },
-    {
-      id: "vid3",
-      title: "Tailwind CSS Crash Course",
-      thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/maxresdefault.jpg",
-      watchedAt: "2025-05-30T11:15:00Z",
-    },
-  ];
+const PlaylistPage = () => {
+  const { playlistId } = useParams();
+  const [playlist, setPlaylist] = useState(null);
+
+  useEffect(() => {
+    async function fetchPlaylist() {
+      try {
+        const res = await getPlaylistById(Endpoint.PLAYLIST_BY_ID(playlistId));
+        setPlaylist(res);
+      } catch (err) {
+        console.error("Failed to fetch playlist", err);
+      }
+    }
+
+    fetchPlaylist();
+  }, [playlistId]);
+
+  if (!playlist) return <div className="p-6">Loading...</div>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Your playlists</h1>
-      <ul className="space-y-4">
-        {playlists.map((video) => (
-          <li
-            key={video.id}
-            className="border p-4 rounded-lg shadow-sm hover:shadow-md transition"
-          >
-            <div className="flex items-center gap-4">
-              <img
-                src={video.thumbnail}
-                alt={video.title}
-                className="w-32 h-20 object-cover rounded"
-              />
-              <div>
-                <h2 className="text-lg font-semibold">{video.title}</h2>
-                <p className="text-sm text-gray-500">
-                  Watched on: {new Date(video.watchedAt).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          </li>
+    <div className="p-6 grid grid-cols-1 md:grid-cols-[350px_1fr] gap-6">
+      {/* LEFT SECTION */}
+      <div className="space-y-4 h-[530px] rounded-lg p-3 bg-green-300">
+        {/* Thumbnail */}
+        <div className="w-[300px] mx-auto p-2 mt-4 aspect-video overflow-hidden rounded-xl">
+          <img
+            src={
+              playlist.videos[0]?.thumbnail ||
+              "https://img.icons8.com/ios/500/no-video.png"
+            }
+            alt="Playlist Thumbnail"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        <div className="text-m text-gray-800 whitespace-pre-wrap">
+          Playlist Name :{playlist.name}
+        </div>
+        {/* Meta */}
+        <div className="text-m text-gray-600">
+          {playlist.videos.length} videos
+        </div>
+
+        {/* Description */}
+        <div className="text-sm text-gray-800 whitespace-pre-wrap">
+          Descripton: {playlist.description || "No description yet"}
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-3">
+          <button className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
+            Edit
+          </button>
+          <button className="px-4 py-2 rounded-lg bg-red-600 text-white text-sm hover:bg-red-700">
+            Delete
+          </button>
+        </div>
+      </div>
+
+      {/* RIGHT SECTION */}
+      <div className="space-y-4">
+        {playlist.videos.map((video) => (
+          <VideoCard key={video._id} video={video} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
 
-export default Playlistspage;
+export default PlaylistPage;

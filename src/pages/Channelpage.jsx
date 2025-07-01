@@ -29,7 +29,7 @@ const Channelpage = () => {
     }
 
     fetchCurrentChannelData();
-  }, []);
+  }, [userId]);
 
   return (
     <div>

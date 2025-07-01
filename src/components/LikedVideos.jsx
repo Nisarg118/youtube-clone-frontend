@@ -23,7 +23,7 @@ const LikedVideos = () => {
       {/* Header with Toggle */}
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold">Liked Videos</h3>
-        {videos.length > 5 && (
+        {videos.length > 4 && (
           <button
             onClick={() => setShowAll((prev) => !prev)}
             className="text-sm font-medium text-blue-600 hover:underline"
@@ -34,7 +34,7 @@ const LikedVideos = () => {
       </div>
 
       {/* Grid of Videos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
         {displayedVideos.map((vid) => (
           <VideoCard key={vid._id} video={vid} />
         ))}

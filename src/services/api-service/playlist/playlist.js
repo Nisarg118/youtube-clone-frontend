@@ -7,7 +7,7 @@ async function createPlaylist({ url, formData }) {
       url: url,
       data: formData,
     });
-    return res.data.playlist;
+    return res.data;
   } catch (error) {
     console.log("Error in createPlaylist api service : ", error);
     throw error;
@@ -20,7 +20,7 @@ async function getUserPlaylists(url) {
       method: "GET",
       url: url,
     });
-    return res.data.playlists;
+    return res.data;
   } catch (error) {
     console.log("Error in getUserPlaylists api service : ", error);
     throw error;
@@ -33,7 +33,7 @@ async function getPlaylistById(url) {
       method: "GET",
       url: url,
     });
-    return res.data.playlistVideos;
+    return res.data;
   } catch (error) {
     console.log("Error in getPlaylistById api service : ", error);
     throw error;
@@ -94,6 +94,18 @@ async function removeVideoFromPlaylist(url) {
     throw error;
   }
 }
+
+async function toggleVideoInPlaylist(url) {
+  try {
+    const res = await apiRequest({
+      method: "PATCH",
+      url: url,
+    });
+    return res.message;
+  } catch (error) {
+    console.log("Error in toggleVideoInPlaylist api-service ", error);
+  }
+}
 export {
   createPlaylist,
   getUserPlaylists,
@@ -102,4 +114,5 @@ export {
   deletePlaylist,
   addVideoToPlaylist,
   removeVideoFromPlaylist,
+  toggleVideoInPlaylist,
 };

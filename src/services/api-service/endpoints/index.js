@@ -11,6 +11,7 @@ const Endpoint = {
   SIGNUP: "users/register",
   SIGNIN: "users/login",
   LOGOUT: "users/logout",
+  CURRENT_USER: "users/current-user",
   USERCHANNELPROFILE: (userId) => `users/c/${userId}`,
 
   //subscription
@@ -25,7 +26,7 @@ const Endpoint = {
 
   //playlist
   CREATE_PLAYLIST: "playlist",
-  USER_PLAYLISTS: (id) => `playlist/user/${id}`, //This will fetch a channel's playlists
+  USER_PLAYLISTS: (channelId) => `playlist/user/${channelId}`, //This will fetch a channel's playlists
   PLAYLIST_BY_ID: (playlistId) => `playlist/${playlistId}`,
   UPDATE_PLAYLIST: (playlistId) => `playlist/${playlistId}`,
   DELETE_PLAYLIST: (playlistId) => `playlist/${playlistId}`,
@@ -33,12 +34,13 @@ const Endpoint = {
     `playlist/add/${videoId}/${playlistId}`,
   REMOVE_VIDEO_FROM_PLAYLIST: (videoId, playlistId) =>
     `playlist/remove/${videoId}/${playlistId}`,
-
+  TOGGLE_PLAYLIST: (videoId, playlistId) =>
+    `playlist/add/${videoId}/${playlistId}`,
   //tweet
   CREATE_TWEET: "tweets",
-  GET_USER_TWEETS: (id) => `tweets/user/${id}`,
-  UPDATE_TWEET: (id) => `tweets/${id}`,
-  DELETE_TWEET: (id) => `tweets/${id}`,
+  GET_USER_TWEETS: (userId) => `tweets/user/${userId}`,
+  UPDATE_TWEET: (tweetId) => `tweets/${tweetId}`,
+  DELETE_TWEET: (tweetId) => `tweets/${tweetId}`,
 
   //comment
   ADD_COMMENT: (videoId) => `comments/${videoId}`,

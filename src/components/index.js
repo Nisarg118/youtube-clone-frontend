@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 import SidebarItem from "./SidebarItem";
 import Header from "./Header";
 import Tags from "./Tags";
-import { VideoCard, VideoCardCompact } from "./VideoCard";
+import VideoCard from "./Cards/VideoCard";
 import WatchHistory from "./WatchHistory";
 import LikedVideos from "./LikedVideos";
 import Playlists from "./Playlists";
@@ -14,12 +14,12 @@ import ChannelInfo from "./Channel/ChannelInfo";
 import Navbuttons from "./Navbuttons";
 import Spinner from "./Spinner";
 import EditModal from "../pages/Editpage";
+import PlaylistCard from "./Cards/PlaylistCard";
 export {
   Tags,
   Searchbar,
   HomeSkeleton,
   VideoCard,
-  VideoCardCompact,
   Sidebar,
   SidebarItem,
   Header,
@@ -32,4 +32,5 @@ export {
   Navbuttons,
   Spinner,
   EditModal,
+  PlaylistCard,
 };

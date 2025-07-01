@@ -41,14 +41,14 @@ async function logout(url) {
   }
 }
 
-async function currentUser() {
+async function currentUser(url) {
   try {
     const res = await apiRequest({
       method: "GET",
-      url: "users/current-user",
+      url: url,
     });
 
-    return res.data._id;
+    return res.data;
   } catch (error) {}
 }
 

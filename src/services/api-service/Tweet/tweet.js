@@ -7,7 +7,8 @@ async function createTweet({ url, formData }) {
       url: url,
       data: formData,
     });
-    return res.data.tweet;
+
+    return res.data;
   } catch (error) {
     console.log("Error in createTweet api service : ", error);
     throw error;
@@ -20,7 +21,7 @@ async function getUserTweets(url) {
       method: "GET",
       url: url,
     });
-    return res.data.tweets;
+    return res.data;
   } catch (error) {
     console.log("Error in getUserTweets api service : ", error);
     throw error;
@@ -34,7 +35,7 @@ async function updateTweet({ url, formData }) {
       url: url,
       data: formData,
     });
-    return res.data.tweet;
+    return res.data;
   } catch (error) {
     console.log("Error in updateTweet api service : ", error);
     throw error;

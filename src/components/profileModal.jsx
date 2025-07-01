@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../store/slices/userSlice";
 
-const ProfileModal = () => {
+const ProfileModal = ({ user }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -18,10 +18,10 @@ const ProfileModal = () => {
     <div>
       <div className="absolute right-0 top-full mt-2 w-80 bg-white border border-gray-200 shadow-lg rounded-xl z-50">
         <div className="px-5 py-4">
-          <p className="font-semibold">Coding Hub</p>
-          <p className="text-sm text-gray-500">@codinghub007-p4d</p>
+          <p className="font-semibold">{user.fullName}</p>
+          <p className="text-sm text-gray-500">@{user.username}</p>
           <button
-            onClick={() => navigate("/channel")}
+            onClick={() => navigate(`/channel/${user._id}/videos`)}
             className="mt-2 text-blue-600 text-sm hover:underline"
           >
             View your channel

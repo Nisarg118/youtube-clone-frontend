@@ -2,8 +2,7 @@ import { useDispatch } from "react-redux";
 import { useOutletContext } from "react-router-dom";
 import { getAllVideosOfChannelThunk } from "../../store/slices/videoSlice";
 import { useEffect, useState } from "react";
-import { VideoCard } from "../VideoCard";
-
+import { VideoCard } from "../Cards/VideoCard";
 const ChannelVideos = () => {
   const { userId } = useOutletContext();
   const dispatch = useDispatch();

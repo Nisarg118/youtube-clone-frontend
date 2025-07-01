@@ -2,11 +2,24 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiPlus, FiBell } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import ProfileModal from "./profileModal";
+import { currentUser } from "../services/api-service/user/user";
+import Endpoint from "../services/api-service/endpoints";
 const Navbuttons = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef();
-
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await currentUser(Endpoint.CURRENT_USER);
+        setUser(res);
+      } catch (error) {
+        console.log("Error while fetching logged in user ", error);
+      }
+    }
+    fetchUser();
+  }, []);
   // Close dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -41,13 +54,13 @@ const Navbuttons = () => {
           className="w-9 h-9 rounded-full overflow-hidden border border-gray-300"
         >
           <img
-            src="https://png.pngtree.com/png-vector/20231019/ourmid/pngtree-user-profile-avatar-png-image_10211467.png"
+            src={user?.avatar}
             alt="User avatar"
             className="object-cover w-full h-full"
           />
         </button>
 
-        {open && <ProfileModal />}
+        {open && <ProfileModal user={user} />}
       </div>
     </div>
   );

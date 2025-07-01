@@ -1,4 +1,8 @@
+import { useEffect } from "react";
 import { LikedVideos, Playlists, WatchHistory } from "../components";
+import Endpoint from "../services/api-service/endpoints";
+import { useState } from "react";
+import { currentUser } from "../services/api-service/user/user";
 
 const Aboutpage = () => {
   const user = {
@@ -27,12 +31,27 @@ const Aboutpage = () => {
     createdAt: "1 week ago",
     duration: "12:34",
   }));
+
+  const [id, setId] = useState(null);
+
+  useEffect(() => {
+    async function fetchUserId() {
+      try {
+        const res = await currentUser(Endpoint.CURRENT_USER);
+        setId(res._id);
+      } catch (error) {
+        console.log("Error while fetching userId ", error);
+      }
+    }
+    fetchUserId();
+  }, []);
+  if (!id) return null;
   return (
     <div className="p-6 space-y-10">
       {/* Channel Info */}
       <WatchHistory mockVideos={mockVideos} />
-      <Playlists mockVideos={mockVideos} />
-      <LikedVideos mockVideos={mockVideos} />
+      <Playlists userId={id} />
+      <LikedVideos />
     </div>
   );
 };

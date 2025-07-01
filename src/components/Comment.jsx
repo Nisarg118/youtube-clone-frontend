@@ -94,7 +94,7 @@ const Comment = ({ videoId }) => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Add a comment..."
-              class="w-full border-2 p-1 border-black focus:outline-none resize-y overflow-hidden leading-relaxed"
+              class="w-full text-m border-2 p-1 border-black focus:outline-none resize-y overflow-hidden leading-relaxed"
             />
 
             <div class="flex items-center justify-between mt-2">
@@ -124,7 +124,7 @@ const Comment = ({ videoId }) => {
                   alt="User"
                 />
                 <div>
-                  <p className="text-sm font-medium">
+                  <p className="text-m font-medium">
                     {element.owner?.username}
                   </p>
 
@@ -135,7 +135,7 @@ const Comment = ({ videoId }) => {
                       onChange={(e) => setEditText(e.target.value)}
                     />
                   ) : (
-                    <p className="text-sm text-gray-700">{element.content}</p>
+                    <p className="text-m text-gray-700">{element.content}</p>
                   )}
                 </div>
               </div>
