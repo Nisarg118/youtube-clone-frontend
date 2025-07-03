@@ -10,7 +10,6 @@ const CheckAuth = ({ children }) => {
   const location = useLocation();
   const token = useSelector((state) => state.user.accessToken);
 
-  console.log("token", token);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 

@@ -87,21 +87,21 @@ const Comment = ({ videoId }) => {
     <div>
       {/* Comments */}
       <div className="mt-8">
-        <div class="flex gap-4 mt-10 items-start w-full max-w-3xl">
-          <div class="flex-1">
+        <div className="flex gap-4 mt-10 items-start w-full max-w-3xl">
+          <div className="flex-1">
             <textarea
               rows="3"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Add a comment..."
-              class="w-full text-m border-2 p-1 border-black focus:outline-none resize-y overflow-hidden leading-relaxed"
+              className="w-full text-m border-2 p-1 border-black focus:outline-none resize-y overflow-hidden leading-relaxed"
             />
 
-            <div class="flex items-center justify-between mt-2">
-              <div class="flex items-center gap-2">
+            <div className="flex items-center justify-between mt-2">
+              <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleComment()}
-                  class="px-5 py-3 text-sm font-medium text-white bg-blue-500 rounded-full "
+                  className="px-5 py-3 text-sm font-medium text-white bg-blue-500 rounded-full "
                 >
                   {loading ? "Loading..." : "Comment"}
                 </button>

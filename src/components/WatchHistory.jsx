@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { VideoCard } from "../components";
-import { useNavigate } from "react-router-dom";
 
-const WatchHistory = ({ mockVideos }) => {
-  const navigate = useNavigate();
+const WatchHistory = ({ videos }) => {
+  const [showAll, setShowAll] = useState(false);
 
-  const handleClick = () => {
-    navigate(`/history`);
-  };
+  const visibleVideos = showAll ? videos : videos.slice(0, 5);
+
+  const handleToggle = () => setShowAll((prev) => !prev);
+
   return (
     <div>
       {/* Watch History */}
@@ -14,39 +15,26 @@ const WatchHistory = ({ mockVideos }) => {
         {/* Top Controls */}
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Watch History</h3>
-          <div className="flex items-center gap-2">
+          {videos.length > 5 && (
             <button
+              onClick={handleToggle}
               className="text-sm font-medium text-blue-600 hover:underline"
-              onClick={handleClick}
             >
-              View All
+              {showAll ? "View Less" : "View All"}
             </button>
-            <button
-              onClick={() => {
-                document.getElementById("history-scroll").scrollLeft -= 300;
-              }}
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              ←
-            </button>
-            <button
-              onClick={() => {
-                document.getElementById("history-scroll").scrollLeft += 300;
-              }}
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-            >
-              →
-            </button>
-          </div>
+          )}
         </div>
 
-        {/* Horizontal Scrollable Row */}
+        {/* Scrollable Row or Full Wrap */}
         <div
-          id="history-scroll"
-          className="flex gap-4 overflow-x-auto scrollbar-hide py-2"
+          className={`py-2 ${
+            showAll
+              ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+              : "flex gap-4 overflow-x-auto scrollbar-hide"
+          }`}
         >
-          {mockVideos.map((vid) => (
-            <div key={vid.id} className="flex-shrink-0 w-64">
+          {visibleVideos.map((vid) => (
+            <div key={vid._id} className={showAll ? "" : "flex-shrink-0 w-64"}>
               <VideoCard video={vid} />
             </div>
           ))}

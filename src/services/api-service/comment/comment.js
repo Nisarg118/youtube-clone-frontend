@@ -7,7 +7,6 @@ async function createComment({ url, formData }) {
       url: url,
       data: formData,
     });
-    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log("Error in createComment api service : ", error);
@@ -21,7 +20,6 @@ async function getVideoComments(url) {
       method: "GET",
       url: url,
     });
-    console.log(res);
     return res.data;
   } catch (error) {
     console.log("Error in getVideoComments api service : ", error);

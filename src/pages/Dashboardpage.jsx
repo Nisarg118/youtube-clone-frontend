@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { VideoCardCompact } from "../components";
 import { useDispatch } from "react-redux";
 import { getAllVideosOfChannelThunk } from "../store/slices/videoSlice";
 import { useNavigate } from "react-router-dom";
 import { deleteVideo } from "../services/api-service/video/video";
 import Endpoint from "../services/api-service/endpoints";
 import { currentUser } from "../services/api-service/user/user";
+import { VideoCard } from "../components";
 
 export default function Dashboardpage() {
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ export default function Dashboardpage() {
           {videos.map((video) => (
             <div key={video.id} className="border p-2 rounded shadow space-y-2">
               <div className="flex items-center justify-between w-full gap-4">
-                <VideoCardCompact video={video} />
+                <VideoCard video={video} />
                 <div className="flex justify-center gap-2 mr-4">
                   <button
                     onClick={() => navigate(`/edit/${video.id}`)}

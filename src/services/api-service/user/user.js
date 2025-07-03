@@ -66,4 +66,38 @@ async function getUserChannelProfile(url) {
   }
 }
 
-export { signUp, logIn, logout, currentUser, getUserChannelProfile };
+async function addToWatchHistory({ url, videoId }) {
+  try {
+    const res = await apiRequest({
+      method: "PATCH",
+      url: url,
+      data: { videoId },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log("Error in addToWatchHistory api service", error);
+  }
+}
+
+async function getWatchHistory(url) {
+  try {
+    const res = await apiRequest({
+      method: "GET",
+      url: url,
+    });
+    return res.data;
+  } catch (error) {
+    console.log("Error in getWatchHistory api service", error);
+  }
+}
+
+export {
+  signUp,
+  logIn,
+  logout,
+  currentUser,
+  getUserChannelProfile,
+  getWatchHistory,
+  addToWatchHistory,
+};

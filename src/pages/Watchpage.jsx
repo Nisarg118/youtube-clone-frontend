@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import videojs from "video.js";
 import { VideoPlayer } from "../features";
-import { Comment, VideoCardCompact } from "../components/";
+import { Comment, VideoCard } from "../components/";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,6 +14,7 @@ import Endpoint from "../services/api-service/endpoints";
 import { AiOutlineLike } from "react-icons/ai";
 import { AiFillLike } from "react-icons/ai";
 import { getLikeCounts, toggleLike } from "../services/api-service/like/like";
+import { addToWatchHistory } from "../services/api-service/user/user";
 
 const Watchpage = ({ suggestedVideos }) => {
   const { id } = useParams();
@@ -70,28 +71,33 @@ const Watchpage = ({ suggestedVideos }) => {
     fetchLikeCounts();
   }, []);
 
-  const videoOptions = useMemo(
-    () => ({
-      controls: true,
-      fluid: true,
-      autoplay: false,
-      sources: [{ src: vid.videoFile, type: "video/mp4" }],
-    }),
-    [vid.videoFile]
-  );
+  const videoOptions = {
+    controls: true,
+    fluid: true,
+    responsive: true,
+    sources: [{ src: vid.videoFile, type: "video/mp4" }],
+  };
   const handlePlayerReady = (player) => {
     playerRef.current = player;
     player.on("waiting", () => videojs.log("player is waiting"));
     player.on("dispose", () => videojs.log("player will dispose"));
+    player.on("play", () => {
+      console.log(id);
+      if (id) {
+        addToWatchHistory({
+          url: Endpoint.ADD_TO_WATCH_HISTORY,
+          videoId: id,
+        });
+      }
+    });
   };
 
-  console.log("likeCount : ", likeCount);
   return (
     <div className="flex flex-col lg:flex-row w-full max-w-[1350px] gap-6">
       {/* LEFT SECTION */}
       <div className="flex-1">
         {/* Video Player */}
-        <div className="w-full aspect-video bg-black rounded-lg overflow-hidden">
+        <div>
           <VideoPlayer options={videoOptions} onReady={handlePlayerReady} />
         </div>
 
@@ -162,7 +168,7 @@ const Watchpage = ({ suggestedVideos }) => {
       {/* RIGHT SECTION: Suggested Videos */}
       <div className="w-full lg:w-[400px] flex flex-col gap-4">
         {suggestedVideos.slice(0, 15).map((vid, idx) => (
-          <VideoCardCompact key={idx} video={vid} />
+          <VideoCard key={idx} video={vid} />
         ))}
       </div>
     </div>

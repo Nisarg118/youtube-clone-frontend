@@ -13,6 +13,8 @@ const Endpoint = {
   LOGOUT: "users/logout",
   CURRENT_USER: "users/current-user",
   USERCHANNELPROFILE: (userId) => `users/c/${userId}`,
+  WATCH_HISTORY: "users/history",
+  ADD_TO_WATCH_HISTORY: "users/history/add",
 
   //subscription
   SUBSCRIBERSNO: (id) => `subscriptions/c/${id}`,
@@ -36,6 +38,7 @@ const Endpoint = {
     `playlist/remove/${videoId}/${playlistId}`,
   TOGGLE_PLAYLIST: (videoId, playlistId) =>
     `playlist/add/${videoId}/${playlistId}`,
+
   //tweet
   CREATE_TWEET: "tweets",
   GET_USER_TWEETS: (userId) => `tweets/user/${userId}`,

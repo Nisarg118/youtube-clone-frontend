@@ -25,7 +25,6 @@ async function getLikeCounts(url) {
       url: url,
     });
 
-    console.log("getLikeCounts api-service : ", res.data);
     return res.data;
   } catch (error) {
     console.log("Error in getLikeCounts : ", error);
