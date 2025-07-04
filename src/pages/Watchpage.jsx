@@ -82,7 +82,6 @@ const Watchpage = ({ suggestedVideos }) => {
     player.on("waiting", () => videojs.log("player is waiting"));
     player.on("dispose", () => videojs.log("player will dispose"));
     player.on("play", () => {
-      console.log(id);
       if (id) {
         addToWatchHistory({
           url: Endpoint.ADD_TO_WATCH_HISTORY,

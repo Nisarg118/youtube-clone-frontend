@@ -12,6 +12,7 @@ const Endpoint = {
   SIGNIN: "users/login",
   LOGOUT: "users/logout",
   CURRENT_USER: "users/current-user",
+  REMOVE_USER:"users/remove",
   USERCHANNELPROFILE: (userId) => `users/c/${userId}`,
   WATCH_HISTORY: "users/history",
   ADD_TO_WATCH_HISTORY: "users/history/add",

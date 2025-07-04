@@ -92,6 +92,19 @@ async function getWatchHistory(url) {
   }
 }
 
+async function deleteUser(url) {
+  try {
+    const res = await apiRequest({
+      method: "DELETE",
+      url: url,
+    });
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log("Error in deleteUser api service", error);
+  }
+}
+
 export {
   signUp,
   logIn,
@@ -100,4 +113,5 @@ export {
   getUserChannelProfile,
   getWatchHistory,
   addToWatchHistory,
+  deleteUser,
 };

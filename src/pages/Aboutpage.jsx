@@ -51,10 +51,8 @@ const Aboutpage = () => {
         <WatchHistory videos={videos} />
       )}
 
-      {/* Playlists Section */}
       {userId && <Playlists userId={userId} />}
 
-      {/* Liked Videos Section */}
       <LikedVideos />
     </div>
   );
